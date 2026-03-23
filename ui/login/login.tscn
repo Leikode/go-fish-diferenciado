@@ -1,0 +1,33 @@
+[gd_scene format=3 uid="uid://dgkufjs82x1wn"]
+
+[ext_resource type="Script" uid="uid://c0fcs062rfpv3" path="res://ui/login/login.gd" id="1_ntsjo"]
+
+[node name="Login" type="Control" unique_id=493552888]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_ntsjo")
+
+[node name="NameInput" type="LineEdit" parent="." unique_id=1381526753]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 426.0
+offset_top = 214.0
+offset_right = 603.75
+offset_bottom = 245.0
+
+[node name="ConnectButton" type="Button" parent="." unique_id=1927199457]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 441.0
+offset_top = 255.0
+offset_right = 587.0
+offset_bottom = 286.0
+text = "Connect to Server"
+
+[node name="StatusLabel" type="Label" parent="." unique_id=782520100]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 426.0
+offset_top = 190.0
+offset_right = 603.0
+offset_bottom = 213.0

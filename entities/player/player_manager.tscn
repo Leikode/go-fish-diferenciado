@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://5jsb4k7lymuw"]
+
+[ext_resource type="Shader" uid="uid://3llix6pxs2q" path="res://entities/player/hand/art/card.gdshader" id="1_5jufm"]
+[ext_resource type="Script" uid="uid://3pxs74ey1q4h" path="res://entities/player/player_manager.gd" id="1_aphe0"]
+[ext_resource type="PackedScene" uid="uid://cfseoiy0neycl" path="res://entities/player/hand/hand_component.tscn" id="3_g50ba"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_t1iv0"]
+shader = ExtResource("1_5jufm")
+shader_parameter/outline_color = Color(0.32941177, 0.12156863, 0.33333334, 1)
+shader_parameter/line_thickness = 0.5
+
+[node name="PlayerManager" type="Node2D" unique_id=1042850570 node_paths=PackedStringArray("hand_component")]
+material = SubResource("ShaderMaterial_t1iv0")
+script = ExtResource("1_aphe0")
+hand_component = NodePath("HandComponent")
+
+[node name="HandComponent" parent="." unique_id=1554739096 instance=ExtResource("3_g50ba")]

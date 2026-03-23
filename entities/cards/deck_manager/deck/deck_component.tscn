@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://gt2p8yp0cpwi"]
+
+[ext_resource type="Script" uid="uid://b281xnj3p2uln" path="res://entities/cards/deck_manager/deck/deck_component.gd" id="1_u0s7h"]
+
+[node name="DeckComponent" type="Node" unique_id=1072285284]
+script = ExtResource("1_u0s7h")
+metadata/_custom_type_script = "uid://b281xnj3p2uln"

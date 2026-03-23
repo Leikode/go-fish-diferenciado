@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "src"
+version = "0.1.0"
+description = ""
+authors = ["Leikode <victorhugosantosdelima@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.12"
+fastapi = "0.135.1"
+uvicorn = "0.42.0"
+websockets = "16.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

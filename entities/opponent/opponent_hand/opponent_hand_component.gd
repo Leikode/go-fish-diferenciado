@@ -1,0 +1,2 @@
+class_name OpponentHandComponent
+extends Node2D
