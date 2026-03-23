@@ -2,16 +2,33 @@
 
 [ext_resource type="Shader" uid="uid://3llix6pxs2q" path="res://entities/player/hand/art/card.gdshader" id="1_5jufm"]
 [ext_resource type="Script" uid="uid://3pxs74ey1q4h" path="res://entities/player/player_manager.gd" id="1_aphe0"]
-[ext_resource type="PackedScene" uid="uid://cfseoiy0neycl" path="res://entities/player/hand/hand_component.tscn" id="3_g50ba"]
+[ext_resource type="Script" uid="uid://dfmsqqll1jgfh" path="res://entities/player/hand/render_hand_component.gd" id="3_5jufm"]
+[ext_resource type="Curve" uid="uid://bkauepf0rgyhp" path="res://entities/player/hand/art/hand_curve.tres" id="5_t1iv0"]
+[ext_resource type="Curve" uid="uid://c28w34oih0wmx" path="res://entities/player/hand/art/rotation_curve.tres" id="6_71y6p"]
+[ext_resource type="Script" uid="uid://c8s32vl7o84o6" path="res://entities/player/hand/inspect_hand_component.gd" id="6_oddmt"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_t1iv0"]
 shader = ExtResource("1_5jufm")
 shader_parameter/outline_color = Color(0.32941177, 0.12156863, 0.33333334, 1)
 shader_parameter/line_thickness = 0.5
 
-[node name="PlayerManager" type="Node2D" unique_id=1042850570 node_paths=PackedStringArray("hand_component")]
+[node name="PlayerManager" type="Node2D" unique_id=1042850570]
 material = SubResource("ShaderMaterial_t1iv0")
 script = ExtResource("1_aphe0")
-hand_component = NodePath("HandComponent")
 
-[node name="HandComponent" parent="." unique_id=1554739096 instance=ExtResource("3_g50ba")]
+[node name="RenderHandComponent" type="Node2D" parent="." unique_id=836037686]
+unique_name_in_owner = true
+script = ExtResource("3_5jufm")
+hand_curve = ExtResource("5_t1iv0")
+rotation_curve = ExtResource("6_71y6p")
+x_sep = 15.0
+y_max = -10.0
+metadata/_custom_type_script = "uid://dfmsqqll1jgfh"
+
+[node name="InspectHandComponent" type="Node" parent="." unique_id=1425170257]
+unique_name_in_owner = true
+script = ExtResource("6_oddmt")
+metadata/_custom_type_script = "uid://c8s32vl7o84o6"
+
+[node name="PlayerHand" type="Node2D" parent="." unique_id=2117556509]
+unique_name_in_owner = true

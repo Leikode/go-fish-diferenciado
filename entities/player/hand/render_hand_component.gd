@@ -1,8 +1,7 @@
-class_name HandComponent
+class_name RenderHandComponent
 extends Node2D
 
-@export var cards_texture: Texture2D
-
+@onready var cards_texture: Texture2D = preload("res://entities/player/hand/art/Pixel_Playing_Card_Set_updated.svg")
 @onready var card_shader: Shader = preload("res://entities/player/hand/art/card.gdshader")
 
 var _cards: Array[CardData] = []
@@ -24,10 +23,56 @@ var hand_width: float
 const SCALE_MULTIPLIER: float = 3.
 var viewport_size: Vector2
 
+var _parent: PlayerManager
 
-func setup(player_id: int) -> void:
+var colors: Dictionary[int, Vector3] = {
+	1: Vector3(
+		0.2,
+		0.5,
+		0.9,
+	),
+	2: Vector3(
+		0.1,
+		0.7,
+		0.8,
+	),
+	3: Vector3(
+		0.3,
+		0.8,
+		0.7,
+	),
+	4: Vector3(
+		0.15,
+		0.4,
+		0.75,
+	),
+	5: Vector3(
+		0.4,
+		0.65,
+		0.95,
+	),
+	6: Vector3(
+		0.1,
+		0.55,
+		0.6,
+	),
+	7: Vector3(
+		0.5,
+		0.3,
+		0.9,
+	),
+	8: Vector3(
+		0.2,
+		0.75,
+		0.55,
+	),
+}
+
+
+func setup(player_manager: PlayerManager, player_id: int) -> void:
 	_player_id = player_id
-	viewport_size = DisplayServer.window_get_size()
+	_parent = player_manager
+	viewport_size = get_viewport().get_visible_rect().size
 
 
 func receive_cards(cards: Array[CardData], deck_manager: DeckManager) -> void:
@@ -45,27 +90,11 @@ func remove_card(card: CardData, deck_manager: DeckManager) -> void:
 	_render_hand(deck_manager)
 
 
-func get_cards() -> Array[CardData]:
-	return _cards.duplicate()
-
-
-func get_card_keys() -> Array[String]:
-	var keys: Array[String] = []
-	for c in _cards:
-		keys.append(c.to_key())
-	return keys
-
-
-func has_card(card: CardData) -> bool:
-	for c in _cards:
-		if c.to_key() == card.to_key():
-			return true
-	return false
-
-
 func _render_hand(deck_manager: DeckManager) -> void:
-	for child in get_children():
+	for child in _parent.player_hand.get_children():
 		child.queue_free()
+
+	_cards.sort_custom(func(a, b): return a.number < b.number)
 
 	var card_size: Vector2i = deck_manager.get_card_size()
 	var count: int = _cards.size()
@@ -79,12 +108,14 @@ func _render_hand(deck_manager: DeckManager) -> void:
 		final_x_sep = (hand_total_width - (card_size.x * SCALE_MULTIPLIER * count)) / (count - 1.)
 		hand_width = hand_total_width
 
-	var new_side_offset: float = viewport_size.x - (hand_width + (card_size.x * SCALE_MULTIPLIER))
+	var new_side_offset: float = ((viewport_size.x - hand_width + (card_size.x * SCALE_MULTIPLIER)) / 2.)
 
 	for i in count:
 		var card: CardData = _cards[i]
 		var rect_origin: Vector2i = deck_manager.get_rect_for(card)
 		var region: Rect2 = Rect2(rect_origin, card_size)
+
+		var card_node: Card = deck_manager.card_scene.instantiate()
 
 		var sprite := Sprite2D.new()
 
@@ -92,6 +123,7 @@ func _render_hand(deck_manager: DeckManager) -> void:
 
 		var mat := ShaderMaterial.new()
 		mat.shader = card_shader
+		mat.set_shader_parameter("outline_color", colors[card.number])
 		sprite.material = mat
 
 		sprite.scale = Vector2(SCALE_MULTIPLIER, SCALE_MULTIPLIER)
@@ -105,16 +137,17 @@ func _render_hand(deck_manager: DeckManager) -> void:
 			y_multiplier = 0.
 			rot_multiplier = 0.
 
-		var final_x: float = (new_side_offset * 1.5) + (card_size.x * SCALE_MULTIPLIER * i) + (final_x_sep * i)
+		var final_x: float = new_side_offset + (card_size.x * SCALE_MULTIPLIER * i) + (final_x_sep * i)
 		var final_y: float = y_min + (y_max * y_multiplier) + 1000.
 
-		sprite.position = Vector2(final_x, final_y)
-		sprite.rotation_degrees = max_rotation_deg * rot_multiplier
+		card_node.position = Vector2(final_x, final_y)
+		card_node.rotation_degrees = max_rotation_deg * rot_multiplier
 
-		sprite.name = card.to_key()
-		sprite.set_meta("card_data", card)
+		card_node.name = card.to_key()
+		card_node.card = card
+		card_node.add_child(sprite)
 
-		add_child(sprite)
+		_parent.player_hand.add_child(card_node)
 
 
 func _get_card_texture(card, region: Rect2) -> Texture2D:

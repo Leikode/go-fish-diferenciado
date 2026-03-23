@@ -1,6 +1,8 @@
 class_name DeckManager
 extends Node
 
+@export var card_scene: PackedScene
+
 @onready var deck_component: DeckComponent = %DeckComponent
 
 var card_owner: Dictionary[String, int] = { }

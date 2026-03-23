@@ -8,8 +8,8 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_idiba"]
 shader = ExtResource("2_xmhil")
-shader_parameter/first_color = Color(0.3, 0.22, 0.28, 1)
-shader_parameter/second_color = Color(0.56, 0.47, 0.53, 1)
+shader_parameter/first_color = Color(0.13042137, 0.13296095, 0.20294157, 1)
+shader_parameter/second_color = Color(0.25024596, 0.1980657, 0.23234391, 1)
 shader_parameter/square_size = 84.7690039790275
 shader_parameter/speed = 0.50000002375
 shader_parameter/direction = Vector2(0, 1)
