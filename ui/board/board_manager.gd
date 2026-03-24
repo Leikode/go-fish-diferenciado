@@ -1,11 +1,23 @@
 extends Node2D
 
 @export var deck_manager: DeckManager
+@export var selection: Node2D
 @export var player_scene: PackedScene
 @export var opponent_scene: PackedScene
 
+@onready var inspect_board_component: InspectBoardComponent = %InspectBoardComponent
+
 var _local_player: PlayerManager
 var _opponents: Dictionary[int, OpponentManager] = { }
+
+var player_id_to_direction: Dictionary = {
+	0: Vector2(0., 1.),
+	1: Vector2(1., 0.),
+	2: Vector2(0., -1.),
+	3: Vector2(-1., 0.),
+}
+
+var _player_turn: int = 1
 
 
 func _ready() -> void:
@@ -50,16 +62,18 @@ func _host_distribute_cards() -> void:
 
 	_local_player.receive_cards(deck_manager.get_hand_for(GameState.local_player_id), deck_manager)
 
-	_broadcast_game_state()
+	_broadcast_start_hand()
+	_handle_player_turn(GameState.local_player_id)
 
 
-func _broadcast_game_state() -> void:
+func _broadcast_start_hand() -> void:
 	for opponent_id in _opponents:
 		if opponent_id == GameState.local_player_id:
 			continue
+
 		NetworkManager.send(
 			{
-				"action": "game_state",
+				"action": "start_hand",
 				"hand": deck_manager.get_hand_keys_for(opponent_id),
 				"to": opponent_id,
 			},
@@ -75,15 +89,20 @@ func play_card_local(card: CardData) -> void:
 
 func _on_message_received(msg: Dictionary) -> void:
 	match msg.get("action", ""):
-		"game_state":
-			_handle_remote_game_state(msg.get("hand", []))
+		"start_hand":
+			_handle_start_hand(msg.get("hand", []))
+		"number_of_cards":
+			_display_opponent_number_of_cards(
+				int(msg.get("from")),
+				int(msg.get("value")),
+			)
+		"player_turn":
+			_handle_player_turn(
+				int(msg.get("player_in_turn")),
+			)
 
 
-func _on_game_state() -> void:
-	pass
-
-
-func _handle_remote_game_state(hand_keys: Array) -> void:
+func _handle_start_hand(hand_keys: Array) -> void:
 	if GameState.is_host():
 		return
 
@@ -93,6 +112,40 @@ func _handle_remote_game_state(hand_keys: Array) -> void:
 		deck_manager.card_owner[key] = GameState.local_player_id
 
 	_local_player.receive_cards(cards, deck_manager)
+	_set_board_shader_direction(1)
+
+
+func _display_opponent_number_of_cards(opponent_id: int, number_of_cards: int) -> void:
+	var opponent: OpponentManager = _opponents[opponent_id]
+	opponent.number_of_cards = number_of_cards
+	opponent.display_number_of_cards(
+		player_id_to_direction[(GameState.local_player_id - opponent_id + 4) % 4],
+	)
+
+
+func _set_board_shader_direction(current_player_id: int):
+	var local_player_id: int = GameState.local_player_id
+
+	var bg_node: ColorRect = get_node("CanvasLayer/BoardBG")
+	if current_player_id == local_player_id:
+		var speed: float = (_local_player.points + 1.) * 0.5
+		bg_node.material.set_shader_parameter("speed", speed)
+	else:
+		var speed: float = (_opponents[current_player_id].points + 1.) * 0.5
+		bg_node.material.set_shader_parameter("speed", speed)
+
+	bg_node.material.set_shader_parameter(
+		"direction",
+		player_id_to_direction[(local_player_id - current_player_id + 4) % 4],
+	)
+
+
+func _handle_player_turn(player_in_turn: int) -> void:
+	_set_board_shader_direction(player_in_turn)
+	if GameState.local_player_id != player_in_turn:
+		return
+
+	selection.handle_selection()
 
 
 func _on_player_left(player_id: int, _name: String) -> void:

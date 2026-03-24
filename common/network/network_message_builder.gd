@@ -23,3 +23,7 @@ static func buy_card_response(to_player_id: int, card_key: String, accepted: boo
 
 static func game_state(hand: Array[String]) -> Dictionary:
 	return { "action": "game_state", "hand": hand, "to": "others" }
+
+
+static func report_number_of_cards(from: int, number_of_cards: int) -> Dictionary:
+	return { "action": "number_of_cards", "from": from, "value": number_of_cards, "to": "others" }

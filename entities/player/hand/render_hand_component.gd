@@ -89,8 +89,6 @@ func _render_hand(deck_manager: DeckManager) -> void:
 	for child in _parent.player_hand.get_children():
 		child.queue_free()
 
-	_cards.sort_custom(func(a, b): return a.number < b.number)
-
 	var card_size: Vector2i = deck_manager.get_card_size()
 	var count: int = _cards.size()
 
@@ -117,7 +115,7 @@ func _render_hand(deck_manager: DeckManager) -> void:
 
 		sprite.texture = _get_card_texture(card, region)
 
-		var mat := ShaderMaterial.new()
+		var mat: ShaderMaterial = ShaderMaterial.new()
 		mat.shader = card_shader
 		mat.set_shader_parameter("outline_color", colors[card.number])
 		mat.set_shader_parameter("angle", 0.)

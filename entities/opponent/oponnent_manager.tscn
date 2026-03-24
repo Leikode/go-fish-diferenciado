@@ -1,12 +1,25 @@
 [gd_scene format=3 uid="uid://dhuneeimjxjc5"]
 
 [ext_resource type="Script" uid="uid://dyaci4gahg51h" path="res://entities/opponent/opponent_manager.gd" id="1_spju7"]
-[ext_resource type="Script" uid="uid://j08i1qjjxhda" path="res://entities/opponent/opponent_hand/opponent_hand_component.gd" id="2_lwvup"]
+[ext_resource type="Script" uid="uid://j08i1qjjxhda" path="res://entities/opponent/opponent_hand/render_opponent_hand_component.gd" id="2_lwvup"]
+[ext_resource type="Script" uid="uid://p1bax7l5beeb" path="res://entities/opponent/opponent_hand/opponent_hand_area.gd" id="3_iqaqe"]
 
-[node name="OponnentManager" type="Node2D" unique_id=1910740341]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lwvup"]
+size = Vector2(96, 144)
+
+[node name="OponnentManager" type="Control" unique_id=1219859225]
+layout_mode = 3
+anchors_preset = 0
 script = ExtResource("1_spju7")
 
-[node name="OpponentHandComponent" type="Node2D" parent="." unique_id=1134804435]
+[node name="RenderOpponentHandComponent" type="Node2D" parent="." unique_id=2093640599]
 unique_name_in_owner = true
 script = ExtResource("2_lwvup")
-metadata/_custom_type_script = "uid://j08i1qjjxhda"
+
+[node name="OpponentHandArea" type="Area2D" parent="." unique_id=690970588]
+unique_name_in_owner = true
+collision_mask = 4
+script = ExtResource("3_iqaqe")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OpponentHandArea" unique_id=2001444710]
+shape = SubResource("RectangleShape2D_lwvup")

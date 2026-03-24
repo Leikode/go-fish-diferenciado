@@ -1,0 +1,2 @@
+class_name OpponentHandArea
+extends Area2D
