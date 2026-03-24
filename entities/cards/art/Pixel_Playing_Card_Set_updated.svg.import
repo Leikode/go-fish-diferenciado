@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://xgi30bjwu1jy"
-path="res://.godot/imported/Pixel_Playing_Card_Set_updated.svg-1835a93c7ec8852323475aaa38bfe742.ctex"
+path="res://.godot/imported/Pixel_Playing_Card_Set_updated.svg-c4f85b0dee2e40f5990708abd0e8c8c9.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://entities/player/hand/art/Pixel_Playing_Card_Set_updated.svg"
-dest_files=["res://.godot/imported/Pixel_Playing_Card_Set_updated.svg-1835a93c7ec8852323475aaa38bfe742.ctex"]
+source_file="res://entities/cards/art/Pixel_Playing_Card_Set_updated.svg"
+dest_files=["res://.godot/imported/Pixel_Playing_Card_Set_updated.svg-c4f85b0dee2e40f5990708abd0e8c8c9.ctex"]
 
 [params]
 

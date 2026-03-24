@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://dgs7neluoeyrp"]
 
 [ext_resource type="Script" uid="uid://cd6i8m6q6b4vr" path="res://entities/cards/deck_manager/deck_manager.gd" id="1_m7a06"]
-[ext_resource type="PackedScene" uid="uid://r4hwx2lpjpek" path="res://entities/cards/card.tscn" id="2_v2h55"]
+[ext_resource type="PackedScene" uid="uid://o7ao0rl0oaxs" path="res://entities/cards/card.tscn" id="2_v2h55"]
 [ext_resource type="Script" uid="uid://b281xnj3p2uln" path="res://entities/cards/deck_manager/deck/deck_component.gd" id="3_iayh4"]
 
 [node name="DeckManager" type="Node" unique_id=694223443]
