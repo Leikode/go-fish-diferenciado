@@ -36,3 +36,11 @@ func on_hovered_on(card: Card) -> void:
 
 func on_hovered_off(card: Card) -> void:
 	inspect_hand_component.card_highlight_off(card)
+
+
+func on_hovered_card_animation(card: Card) -> void:
+	inspect_hand_component.card_animate_rotation(card)
+
+
+func on_reset_card_animation(card: Card) -> void:
+	inspect_hand_component.card_reset_rotation(card)

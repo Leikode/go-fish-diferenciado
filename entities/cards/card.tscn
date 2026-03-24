@@ -13,3 +13,6 @@ unique_name_in_owner = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CardArea" unique_id=2005703826]
 shape = SubResource("RectangleShape2D_q5fv7")
+
+[node name="CardAnimationTimer" type="Timer" parent="." unique_id=73902473]
+unique_name_in_owner = true

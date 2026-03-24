@@ -120,6 +120,7 @@ func _render_hand(deck_manager: DeckManager) -> void:
 		var mat := ShaderMaterial.new()
 		mat.shader = card_shader
 		mat.set_shader_parameter("outline_color", colors[card.number])
+		mat.set_shader_parameter("angle", 0.)
 		sprite.material = mat
 
 		sprite.scale = Vector2(GameConstants.SCALE_MULTIPLIER, GameConstants.SCALE_MULTIPLIER)

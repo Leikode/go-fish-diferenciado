@@ -22,3 +22,19 @@ func card_highlight_off(card: Card) -> void:
 	sprite.scale = Vector2(1., 1.)
 	sprite.scale *= GameConstants.SCALE_MULTIPLIER
 	sprite.z_index = 1
+
+
+func card_animate_rotation(card: Card) -> void:
+	var tween_shader: Tween = create_tween()
+
+	var sprite: Sprite2D = card.get_node("CardSprite")
+
+	var shader_current_angle: float = sprite.material.get_shader_parameter("angle")
+	if shader_current_angle == 0.:
+		tween_shader.tween_property(sprite.material, "shader_parameter/angle", card.rotation_degrees, 0.3)
+
+
+func card_reset_rotation(card: Card) -> void:
+	var tween_shader: Tween = create_tween()
+	var sprite: Sprite2D = card.get_node("CardSprite")
+	tween_shader.tween_property(sprite.material, "shader_parameter/angle", 0., 0.1)
