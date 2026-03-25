@@ -2,34 +2,43 @@ class_name Card
 extends Node2D
 
 @onready var card_area: Area2D = %CardArea
-@onready var card_animation_timer: Timer = %CardAnimationTimer
 
 var card: CardData
 
+var texture_size: Vector2
+
 signal hovered_on(card: Card)
 signal hovered_off(card: Card)
-signal hovered_card_animation(card: Card)
-signal reset_card_animation(card: Card)
 
 
 func _ready() -> void:
 	card_area.mouse_entered.connect(_on_card_area_mouse_entered)
 	card_area.mouse_exited.connect(_on_card_area_mouse_exited)
-	card_animation_timer.wait_time = GameConstants.CARD_ANIMATION_TIMER_WAIT_TIME
-	card_animation_timer.timeout.connect(_on_card_timeout)
+	texture_size = Vector2(96., 144.)
+
+
+func _process(_delta: float) -> void:
+	var sprite: Sprite2D = get_node("CardSprite")
+	var world_pos: Vector2 = get_global_mouse_position()
+	var selection_rect: Rect2 = Rect2(position - (texture_size / 2.), texture_size)
+	if selection_rect.has_point(world_pos):
+		sprite.material.set_shader_parameter("mouse_uv", get_uv_from_world_pos(world_pos))
+
+
+func get_uv_from_world_pos(world_pos: Vector2) -> Vector2:
+	var top_left: Vector2 = position - (texture_size / 2.)
+	var uv: Vector2 = (world_pos - top_left) / texture_size
+	return uv
 
 
 func _on_card_area_mouse_entered() -> void:
 	hovered_on.emit(self)
-	card_animation_timer.start()
+	set_process(true)
 
 
 func _on_card_area_mouse_exited() -> void:
 	hovered_off.emit(self)
-	if !card_animation_timer.is_stopped():
-		card_animation_timer.stop()
-	reset_card_animation.emit(self)
+	set_process(false)
 
-
-func _on_card_timeout() -> void:
-	hovered_card_animation.emit(self)
+	var sprite: Sprite2D = get_node("CardSprite")
+	sprite.material.set_shader_parameter("mouse_uv", Vector2(-1., -1.))

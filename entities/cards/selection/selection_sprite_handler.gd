@@ -16,7 +16,6 @@ func _on_activate_input_for_selection(only_numbers: bool):
 		set_process_input(true)
 	if only_numbers and name.contains("Suit"):
 		visible = false
-	
 
 
 func _input(event):
@@ -27,21 +26,18 @@ func _input(event):
 #			var uv: Vector2 = get_uv_from_click(world_pos)
 			get_parent().fade_others.emit(name)
 
-#func get_uv_from_click(world_click_pos: Vector2) -> Vector2:
-#	var top_left: Vector2 = position - (texture_size / 2.)
-#	var uv: Vector2 = (world_click_pos - top_left) / texture_size
-#	return uv
 
 
 func burn_card(tween: Tween):
 	if material and material is ShaderMaterial:
-		material.set_shader_parameter("position", Vector2(.5,.5))
+		material.set_shader_parameter("position", Vector2(.5, .5))
 		tween.tween_method(update_radius, 0.0, 2.0, 1.)
-		
-	
+
+
 func update_radius(value: float):
 	if material:
 		material.set_shader_parameter("radius", value)
+
 
 func highlight_card(is_number: bool, tween: Tween):
 	var viewport_size: Vector2 = get_viewport().get_visible_rect().size

@@ -4,13 +4,32 @@ uniform vec3 outline_color : source_color = vec3(0.078, 0.733, 1.0);
 uniform float line_thickness : hint_range(0.0, 1.0) = .5;
 const float MAX_LINE_THICKNESS = 4.;
 
-uniform float angle : hint_range(0., 360.) = 0.;
+uniform vec2 mouse_uv = vec2(-1.);
+uniform float rotation_strength : hint_range(0.0, 2.0) = 1.2;
+
 
 void vertex() {
-	mat3 rotation_matrix_z = mat3(vec3(cos(radians(angle)), -sin(radians(angle)), 0), vec3(sin(radians(angle)), cos(radians(angle)), 0), vec3(0, 0, 1));
-	mat3 rotation_matrix_x = mat3(vec3(1, 0, 0), vec3(0, cos(radians(-angle)), sin(radians(-angle))), vec3(0, -sin(radians(-angle)), cos(radians(-angle))));
-	vec3 result = rotation_matrix_z * rotation_matrix_x * vec3(VERTEX, 1.);
-	VERTEX = result.xy;
+	if (mouse_uv != vec2(-1.)) {
+		vec2 centered = mouse_uv - vec2(0.5);
+		
+    	float angle_y = -centered.x * rotation_strength; 
+		float angle_x = centered.y * rotation_strength;  
+
+		mat3 rotation_matrix_y = mat3(
+		    vec3(cos(angle_y), 0, sin(angle_y)),
+		    vec3(0, 1, 0),
+		    vec3(-sin(angle_y), 0, cos(angle_y))
+		);
+
+		mat3 rotation_matrix_x = mat3(
+		    vec3(1, 0, 0),
+		    vec3(0, cos(angle_x), -sin(angle_x)),
+		    vec3(0, sin(angle_x), cos(angle_x))
+		);
+
+		vec3 result = rotation_matrix_y * rotation_matrix_x * vec3(VERTEX, 1.0);
+		VERTEX = result.xy;
+	}
 }
 
 void fragment() {

@@ -16,9 +16,3 @@ func reset_signals() -> void:
 		child.hovered_off.connect(
 			_parent.on_hovered_off,
 		)
-		child.hovered_card_animation.connect(
-			_parent.on_hovered_card_animation,
-		)
-		child.reset_card_animation.connect(
-			_parent.on_reset_card_animation,
-		)

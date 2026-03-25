@@ -14,6 +14,12 @@ uniform float burn_mult = 0.135;
 uniform sampler2D noise_texture;
 uniform vec4 burn_color : source_color;
 
+uniform vec2 mouse_pos;
+
+void vertex() {
+	
+}
+
 void fragment() {
 	float dist = length(position - UV) + (texture(noise_texture, UV).b) * burn_mult;
 	COLOR.rgb = mix(COLOR.rgb, burn_color.rgb, float(dist<radius+border_width));
@@ -32,6 +38,7 @@ shader_parameter/border_width = 0.02
 shader_parameter/burn_mult = 0.135
 shader_parameter/noise_texture = SubResource("NoiseTexture2D_jm0w6")
 shader_parameter/burn_color = Color(0.7952149, 0.53127176, 0.08175241, 1)
+shader_parameter/mouse_pos = Vector2(0, 0)
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_divr8"]
 load_path = "res://.godot/imported/numbers_and_suits.svg-b262cd349cfba770a284b0bd245cd438.ctex"

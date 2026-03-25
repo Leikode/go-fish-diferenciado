@@ -43,14 +43,6 @@ func on_hovered_off(card: Card) -> void:
 	inspect_hand_component.card_highlight_off(card)
 
 
-func on_hovered_card_animation(card: Card) -> void:
-	inspect_hand_component.card_animate_rotation(card)
-
-
-func on_reset_card_animation(card: Card) -> void:
-	inspect_hand_component.card_reset_rotation(card)
-
-
 func _check_for_points(cards: Array[CardData]) -> Array[CardData]:
 	cards.sort_custom(func(a, b): return a.number < b.number)
 
