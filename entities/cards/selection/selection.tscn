@@ -367,11 +367,12 @@ shader_parameter/burn_color = Color(0.7952149, 0.53127176, 0.08175241, 1)
 load_path = "res://.godot/imported/numbers_and_suits.svg-b262cd349cfba770a284b0bd245cd438.ctex"
 
 [node name="Selection" type="Node2D" unique_id=1634089980]
+visible = false
 script = ExtResource("1_ckbhm")
 
 [node name="Number1" type="Sprite2D" parent="." unique_id=691125332]
 material = SubResource("ShaderMaterial_yt4ys")
-position = Vector2(688, 680)
+position = Vector2(720, 680)
 scale = Vector2(2, 2)
 texture = SubResource("CompressedTexture2D_divr8")
 region_enabled = true
@@ -380,7 +381,7 @@ script = ExtResource("3_yt4ys")
 
 [node name="Number2" type="Sprite2D" parent="." unique_id=1860815632]
 material = SubResource("ShaderMaterial_n4fy8")
-position = Vector2(756, 680)
+position = Vector2(788, 680)
 scale = Vector2(2, 2)
 texture = SubResource("CompressedTexture2D_ckbhm")
 region_enabled = true
@@ -389,7 +390,7 @@ script = ExtResource("3_yt4ys")
 
 [node name="Number3" type="Sprite2D" parent="." unique_id=88898409]
 material = SubResource("ShaderMaterial_jf6ij")
-position = Vector2(824, 680)
+position = Vector2(856, 680)
 scale = Vector2(2, 2)
 texture = SubResource("CompressedTexture2D_nplux")
 region_enabled = true
@@ -398,7 +399,7 @@ script = ExtResource("3_yt4ys")
 
 [node name="Number4" type="Sprite2D" parent="." unique_id=193777659]
 material = SubResource("ShaderMaterial_tkil5")
-position = Vector2(892, 680)
+position = Vector2(924, 680)
 scale = Vector2(2, 2)
 texture = SubResource("CompressedTexture2D_jm0w6")
 region_enabled = true
@@ -407,7 +408,7 @@ script = ExtResource("3_yt4ys")
 
 [node name="Number5" type="Sprite2D" parent="." unique_id=1816588433]
 material = SubResource("ShaderMaterial_yr8qj")
-position = Vector2(960, 680)
+position = Vector2(992, 680)
 scale = Vector2(2, 2)
 texture = SubResource("CompressedTexture2D_yt4ys")
 region_enabled = true
@@ -416,7 +417,7 @@ script = ExtResource("3_yt4ys")
 
 [node name="Number6" type="Sprite2D" parent="." unique_id=884082126]
 material = SubResource("ShaderMaterial_ji0y7")
-position = Vector2(1028, 680)
+position = Vector2(1060, 680)
 scale = Vector2(2, 2)
 texture = SubResource("CompressedTexture2D_n4fy8")
 region_enabled = true
@@ -425,7 +426,7 @@ script = ExtResource("3_yt4ys")
 
 [node name="Number7" type="Sprite2D" parent="." unique_id=1064323396]
 material = SubResource("ShaderMaterial_im48j")
-position = Vector2(1096, 680)
+position = Vector2(1128, 680)
 scale = Vector2(2, 2)
 texture = SubResource("CompressedTexture2D_jf6ij")
 region_enabled = true
@@ -434,7 +435,7 @@ script = ExtResource("3_yt4ys")
 
 [node name="Number8" type="Sprite2D" parent="." unique_id=399058353]
 material = SubResource("ShaderMaterial_5pexs")
-position = Vector2(1164, 680)
+position = Vector2(1196, 680)
 scale = Vector2(2, 2)
 texture = SubResource("CompressedTexture2D_tkil5")
 region_enabled = true
@@ -442,8 +443,9 @@ region_rect = Rect2(100, 50, 32, 48)
 script = ExtResource("3_yt4ys")
 
 [node name="SuitSpades" type="Sprite2D" parent="." unique_id=854062768]
+visible = false
 material = SubResource("ShaderMaterial_bsuvy")
-position = Vector2(824, 680)
+position = Vector2(856, 680)
 scale = Vector2(2, 2)
 texture = SubResource("CompressedTexture2D_yr8qj")
 region_enabled = true
@@ -451,8 +453,9 @@ region_rect = Rect2(1, 99, 32, 48)
 script = ExtResource("3_yt4ys")
 
 [node name="SuitDiamonds" type="Sprite2D" parent="." unique_id=1134386920]
+visible = false
 material = SubResource("ShaderMaterial_qspcp")
-position = Vector2(892, 680)
+position = Vector2(924, 680)
 scale = Vector2(2, 2)
 texture = SubResource("CompressedTexture2D_ji0y7")
 region_enabled = true
@@ -460,8 +463,9 @@ region_rect = Rect2(34, 99, 32, 48)
 script = ExtResource("3_yt4ys")
 
 [node name="SuitClubs" type="Sprite2D" parent="." unique_id=323769835]
+visible = false
 material = SubResource("ShaderMaterial_sshht")
-position = Vector2(960, 680)
+position = Vector2(992, 680)
 scale = Vector2(2, 2)
 texture = SubResource("CompressedTexture2D_im48j")
 region_enabled = true
@@ -469,8 +473,9 @@ region_rect = Rect2(67, 99, 32, 48)
 script = ExtResource("3_yt4ys")
 
 [node name="SuitHearts" type="Sprite2D" parent="." unique_id=1417427925]
+visible = false
 material = SubResource("ShaderMaterial_ssati")
-position = Vector2(1028, 680)
+position = Vector2(1060, 680)
 scale = Vector2(2, 2)
 texture = SubResource("CompressedTexture2D_5pexs")
 region_enabled = true

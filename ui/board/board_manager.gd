@@ -1,7 +1,7 @@
 extends Node2D
 
 @export var deck_manager: DeckManager
-@export var selection: Node2D
+@export var selection: Selection
 @export var player_scene: PackedScene
 @export var opponent_scene: PackedScene
 
