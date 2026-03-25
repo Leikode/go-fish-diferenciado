@@ -2,373 +2,187 @@
 
 [ext_resource type="Script" uid="uid://cu4y1krvqkes2" path="res://entities/cards/selection/selection.gd" id="1_ckbhm"]
 [ext_resource type="Script" uid="uid://b8qcs3ttt7k55" path="res://entities/cards/selection/render_selection_component.gd" id="2_nplux"]
+[ext_resource type="Shader" uid="uid://dafdadw52vy4n" path="res://entities/cards/selection/art/selection.gdshader" id="3_n4fy8"]
 [ext_resource type="Script" uid="uid://f4rkl8iqgxu4" path="res://entities/cards/selection/selection_sprite_handler.gd" id="3_yt4ys"]
-
-[sub_resource type="Shader" id="Shader_jm0w6"]
-code = "shader_type canvas_item;
-
-uniform vec2 position;
-uniform float radius;
-uniform float border_width = 0.02;
-uniform float burn_mult = 0.135;
-uniform sampler2D noise_texture;
-uniform vec4 burn_color : source_color;
-
-uniform vec2 mouse_pos;
-
-void vertex() {
-	
-}
-
-void fragment() {
-	float dist = length(position - UV) + (texture(noise_texture, UV).b) * burn_mult;
-	COLOR.rgb = mix(COLOR.rgb, burn_color.rgb, float(dist<radius+border_width));
-	COLOR.a *= 1.0-(float(dist<radius));
-}
-
-"
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_jm0w6"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_yt4ys"]
-shader = SubResource("Shader_jm0w6")
+shader = ExtResource("3_n4fy8")
 shader_parameter/position = Vector2(0, 0)
 shader_parameter/radius = 0.0
 shader_parameter/border_width = 0.02
 shader_parameter/burn_mult = 0.135
 shader_parameter/noise_texture = SubResource("NoiseTexture2D_jm0w6")
 shader_parameter/burn_color = Color(0.7952149, 0.53127176, 0.08175241, 1)
-shader_parameter/mouse_pos = Vector2(0, 0)
+shader_parameter/mouse_uv = Vector2(-1, -1)
+shader_parameter/rotation_strength = 1.2
+shader_parameter/is_selected = false
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_divr8"]
 load_path = "res://.godot/imported/numbers_and_suits.svg-b262cd349cfba770a284b0bd245cd438.ctex"
 
-[sub_resource type="Shader" id="Shader_yt4ys"]
-code = "shader_type canvas_item;
-
-uniform vec2 position;
-uniform float radius;
-uniform float border_width = 0.02;
-uniform float burn_mult = 0.135;
-uniform sampler2D noise_texture;
-uniform vec4 burn_color : source_color;
-
-void fragment() {
-	float dist = length(position - UV) + (texture(noise_texture, UV).b) * burn_mult;
-	COLOR.rgb = mix(COLOR.rgb, burn_color.rgb, float(dist<radius+border_width));
-	COLOR.a *= 1.0-(float(dist<radius));
-}
-
-"
-
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_n4fy8"]
-shader = SubResource("Shader_yt4ys")
+shader = ExtResource("3_n4fy8")
 shader_parameter/position = Vector2(0, 0)
 shader_parameter/radius = 0.0
 shader_parameter/border_width = 0.02
 shader_parameter/burn_mult = 0.135
 shader_parameter/noise_texture = SubResource("NoiseTexture2D_jm0w6")
 shader_parameter/burn_color = Color(0.7952149, 0.53127176, 0.08175241, 1)
+shader_parameter/mouse_uv = Vector2(-1, -1)
+shader_parameter/rotation_strength = 1.2
+shader_parameter/is_selected = false
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_ckbhm"]
 load_path = "res://.godot/imported/numbers_and_suits.svg-b262cd349cfba770a284b0bd245cd438.ctex"
 
-[sub_resource type="Shader" id="Shader_n4fy8"]
-code = "shader_type canvas_item;
-
-uniform vec2 position;
-uniform float radius;
-uniform float border_width = 0.02;
-uniform float burn_mult = 0.135;
-uniform sampler2D noise_texture;
-uniform vec4 burn_color : source_color;
-
-void fragment() {
-	float dist = length(position - UV) + (texture(noise_texture, UV).b) * burn_mult;
-	COLOR.rgb = mix(COLOR.rgb, burn_color.rgb, float(dist<radius+border_width));
-	COLOR.a *= 1.0-(float(dist<radius));
-}
-
-"
-
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_jf6ij"]
-shader = SubResource("Shader_n4fy8")
+shader = ExtResource("3_n4fy8")
 shader_parameter/position = Vector2(0, 0)
 shader_parameter/radius = 0.0
 shader_parameter/border_width = 0.02
 shader_parameter/burn_mult = 0.135
 shader_parameter/noise_texture = SubResource("NoiseTexture2D_jm0w6")
 shader_parameter/burn_color = Color(0.7952149, 0.53127176, 0.08175241, 1)
+shader_parameter/mouse_uv = Vector2(-1, -1)
+shader_parameter/rotation_strength = 1.2
+shader_parameter/is_selected = false
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_nplux"]
 load_path = "res://.godot/imported/numbers_and_suits.svg-b262cd349cfba770a284b0bd245cd438.ctex"
 
-[sub_resource type="Shader" id="Shader_jf6ij"]
-code = "shader_type canvas_item;
-
-uniform vec2 position;
-uniform float radius;
-uniform float border_width = 0.02;
-uniform float burn_mult = 0.135;
-uniform sampler2D noise_texture;
-uniform vec4 burn_color : source_color;
-
-void fragment() {
-	float dist = length(position - UV) + (texture(noise_texture, UV).b) * burn_mult;
-	COLOR.rgb = mix(COLOR.rgb, burn_color.rgb, float(dist<radius+border_width));
-	COLOR.a *= 1.0-(float(dist<radius));
-}
-
-"
-
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_tkil5"]
-shader = SubResource("Shader_jf6ij")
+shader = ExtResource("3_n4fy8")
 shader_parameter/position = Vector2(0, 0)
 shader_parameter/radius = 0.0
 shader_parameter/border_width = 0.02
 shader_parameter/burn_mult = 0.135
 shader_parameter/noise_texture = SubResource("NoiseTexture2D_jm0w6")
 shader_parameter/burn_color = Color(0.7952149, 0.53127176, 0.08175241, 1)
+shader_parameter/mouse_uv = Vector2(-1, -1)
+shader_parameter/rotation_strength = 1.2
+shader_parameter/is_selected = false
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_jm0w6"]
 load_path = "res://.godot/imported/numbers_and_suits.svg-b262cd349cfba770a284b0bd245cd438.ctex"
 
-[sub_resource type="Shader" id="Shader_tkil5"]
-code = "shader_type canvas_item;
-
-uniform vec2 position;
-uniform float radius;
-uniform float border_width = 0.02;
-uniform float burn_mult = 0.135;
-uniform sampler2D noise_texture;
-uniform vec4 burn_color : source_color;
-
-void fragment() {
-	float dist = length(position - UV) + (texture(noise_texture, UV).b) * burn_mult;
-	COLOR.rgb = mix(COLOR.rgb, burn_color.rgb, float(dist<radius+border_width));
-	COLOR.a *= 1.0-(float(dist<radius));
-}
-
-"
-
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_yr8qj"]
-shader = SubResource("Shader_tkil5")
+shader = ExtResource("3_n4fy8")
 shader_parameter/position = Vector2(0, 0)
 shader_parameter/radius = 0.0
 shader_parameter/border_width = 0.02
 shader_parameter/burn_mult = 0.135
 shader_parameter/noise_texture = SubResource("NoiseTexture2D_jm0w6")
 shader_parameter/burn_color = Color(0.7952149, 0.53127176, 0.08175241, 1)
+shader_parameter/mouse_uv = Vector2(-1, -1)
+shader_parameter/rotation_strength = 1.2
+shader_parameter/is_selected = false
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_yt4ys"]
 load_path = "res://.godot/imported/numbers_and_suits.svg-b262cd349cfba770a284b0bd245cd438.ctex"
 
-[sub_resource type="Shader" id="Shader_yr8qj"]
-code = "shader_type canvas_item;
-
-uniform vec2 position;
-uniform float radius;
-uniform float border_width = 0.02;
-uniform float burn_mult = 0.135;
-uniform sampler2D noise_texture;
-uniform vec4 burn_color : source_color;
-
-void fragment() {
-	float dist = length(position - UV) + (texture(noise_texture, UV).b) * burn_mult;
-	COLOR.rgb = mix(COLOR.rgb, burn_color.rgb, float(dist<radius+border_width));
-	COLOR.a *= 1.0-(float(dist<radius));
-}
-
-"
-
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ji0y7"]
-shader = SubResource("Shader_yr8qj")
+shader = ExtResource("3_n4fy8")
 shader_parameter/position = Vector2(0, 0)
 shader_parameter/radius = 0.0
 shader_parameter/border_width = 0.02
 shader_parameter/burn_mult = 0.135
 shader_parameter/noise_texture = SubResource("NoiseTexture2D_jm0w6")
 shader_parameter/burn_color = Color(0.7952149, 0.53127176, 0.08175241, 1)
+shader_parameter/mouse_uv = Vector2(-1, -1)
+shader_parameter/rotation_strength = 1.2
+shader_parameter/is_selected = false
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_n4fy8"]
 load_path = "res://.godot/imported/numbers_and_suits.svg-b262cd349cfba770a284b0bd245cd438.ctex"
 
-[sub_resource type="Shader" id="Shader_ji0y7"]
-code = "shader_type canvas_item;
-
-uniform vec2 position;
-uniform float radius;
-uniform float border_width = 0.02;
-uniform float burn_mult = 0.135;
-uniform sampler2D noise_texture;
-uniform vec4 burn_color : source_color;
-
-void fragment() {
-	float dist = length(position - UV) + (texture(noise_texture, UV).b) * burn_mult;
-	COLOR.rgb = mix(COLOR.rgb, burn_color.rgb, float(dist<radius+border_width));
-	COLOR.a *= 1.0-(float(dist<radius));
-}
-
-"
-
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_im48j"]
-shader = SubResource("Shader_ji0y7")
+shader = ExtResource("3_n4fy8")
 shader_parameter/position = Vector2(0, 0)
 shader_parameter/radius = 0.0
 shader_parameter/border_width = 0.02
 shader_parameter/burn_mult = 0.135
 shader_parameter/noise_texture = SubResource("NoiseTexture2D_jm0w6")
 shader_parameter/burn_color = Color(0.7952149, 0.53127176, 0.08175241, 1)
+shader_parameter/mouse_uv = Vector2(-1, -1)
+shader_parameter/rotation_strength = 1.2
+shader_parameter/is_selected = false
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_jf6ij"]
 load_path = "res://.godot/imported/numbers_and_suits.svg-b262cd349cfba770a284b0bd245cd438.ctex"
 
-[sub_resource type="Shader" id="Shader_im48j"]
-code = "shader_type canvas_item;
-
-uniform vec2 position;
-uniform float radius;
-uniform float border_width = 0.02;
-uniform float burn_mult = 0.135;
-uniform sampler2D noise_texture;
-uniform vec4 burn_color : source_color;
-
-void fragment() {
-	float dist = length(position - UV) + (texture(noise_texture, UV).b) * burn_mult;
-	COLOR.rgb = mix(COLOR.rgb, burn_color.rgb, float(dist<radius+border_width));
-	COLOR.a *= 1.0-(float(dist<radius));
-}
-
-"
-
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_5pexs"]
-shader = SubResource("Shader_im48j")
+shader = ExtResource("3_n4fy8")
 shader_parameter/position = Vector2(0, 0)
 shader_parameter/radius = 0.0
 shader_parameter/border_width = 0.02
 shader_parameter/burn_mult = 0.135
 shader_parameter/noise_texture = SubResource("NoiseTexture2D_jm0w6")
 shader_parameter/burn_color = Color(0.7952149, 0.53127176, 0.08175241, 1)
+shader_parameter/mouse_uv = Vector2(-1, -1)
+shader_parameter/rotation_strength = 1.2
+shader_parameter/is_selected = false
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_tkil5"]
 load_path = "res://.godot/imported/numbers_and_suits.svg-b262cd349cfba770a284b0bd245cd438.ctex"
 
-[sub_resource type="Shader" id="Shader_5pexs"]
-code = "shader_type canvas_item;
-
-uniform vec2 position;
-uniform float radius;
-uniform float border_width = 0.02;
-uniform float burn_mult = 0.135;
-uniform sampler2D noise_texture;
-uniform vec4 burn_color : source_color;
-
-void fragment() {
-	float dist = length(position - UV) + (texture(noise_texture, UV).b) * burn_mult;
-	COLOR.rgb = mix(COLOR.rgb, burn_color.rgb, float(dist<radius+border_width));
-	COLOR.a *= 1.0-(float(dist<radius));
-}
-
-"
-
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_bsuvy"]
-shader = SubResource("Shader_5pexs")
+shader = ExtResource("3_n4fy8")
 shader_parameter/position = Vector2(0, 0)
 shader_parameter/radius = 0.0
 shader_parameter/border_width = 0.02
 shader_parameter/burn_mult = 0.135
 shader_parameter/noise_texture = SubResource("NoiseTexture2D_jm0w6")
 shader_parameter/burn_color = Color(0.7952149, 0.53127176, 0.08175241, 1)
+shader_parameter/mouse_uv = Vector2(-1, -1)
+shader_parameter/rotation_strength = 1.2
+shader_parameter/is_selected = false
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_yr8qj"]
 load_path = "res://.godot/imported/numbers_and_suits.svg-b262cd349cfba770a284b0bd245cd438.ctex"
 
-[sub_resource type="Shader" id="Shader_bsuvy"]
-code = "shader_type canvas_item;
-
-uniform vec2 position;
-uniform float radius;
-uniform float border_width = 0.02;
-uniform float burn_mult = 0.135;
-uniform sampler2D noise_texture;
-uniform vec4 burn_color : source_color;
-
-void fragment() {
-	float dist = length(position - UV) + (texture(noise_texture, UV).b) * burn_mult;
-	COLOR.rgb = mix(COLOR.rgb, burn_color.rgb, float(dist<radius+border_width));
-	COLOR.a *= 1.0-(float(dist<radius));
-}
-
-"
-
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_qspcp"]
-shader = SubResource("Shader_bsuvy")
+shader = ExtResource("3_n4fy8")
 shader_parameter/position = Vector2(0, 0)
 shader_parameter/radius = 0.0
 shader_parameter/border_width = 0.02
 shader_parameter/burn_mult = 0.135
 shader_parameter/noise_texture = SubResource("NoiseTexture2D_jm0w6")
 shader_parameter/burn_color = Color(0.7952149, 0.53127176, 0.08175241, 1)
+shader_parameter/mouse_uv = Vector2(-1, -1)
+shader_parameter/rotation_strength = 1.2
+shader_parameter/is_selected = false
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_ji0y7"]
 load_path = "res://.godot/imported/numbers_and_suits.svg-b262cd349cfba770a284b0bd245cd438.ctex"
 
-[sub_resource type="Shader" id="Shader_qspcp"]
-code = "shader_type canvas_item;
-
-uniform vec2 position;
-uniform float radius;
-uniform float border_width = 0.02;
-uniform float burn_mult = 0.135;
-uniform sampler2D noise_texture;
-uniform vec4 burn_color : source_color;
-
-void fragment() {
-	float dist = length(position - UV) + (texture(noise_texture, UV).b) * burn_mult;
-	COLOR.rgb = mix(COLOR.rgb, burn_color.rgb, float(dist<radius+border_width));
-	COLOR.a *= 1.0-(float(dist<radius));
-}
-
-"
-
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_sshht"]
-shader = SubResource("Shader_qspcp")
+shader = ExtResource("3_n4fy8")
 shader_parameter/position = Vector2(0, 0)
 shader_parameter/radius = 0.0
 shader_parameter/border_width = 0.02
 shader_parameter/burn_mult = 0.135
 shader_parameter/noise_texture = SubResource("NoiseTexture2D_jm0w6")
 shader_parameter/burn_color = Color(0.7952149, 0.53127176, 0.08175241, 1)
+shader_parameter/mouse_uv = Vector2(-1, -1)
+shader_parameter/rotation_strength = 1.2
+shader_parameter/is_selected = false
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_im48j"]
 load_path = "res://.godot/imported/numbers_and_suits.svg-b262cd349cfba770a284b0bd245cd438.ctex"
 
-[sub_resource type="Shader" id="Shader_sshht"]
-code = "shader_type canvas_item;
-
-uniform vec2 position;
-uniform float radius;
-uniform float border_width = 0.02;
-uniform float burn_mult = 0.135;
-uniform sampler2D noise_texture;
-uniform vec4 burn_color : source_color;
-
-void fragment() {
-	float dist = length(position - UV) + (texture(noise_texture, UV).b) * burn_mult;
-	COLOR.rgb = mix(COLOR.rgb, burn_color.rgb, float(dist<radius+border_width));
-	COLOR.a *= 1.0-(float(dist<radius));
-}
-
-"
-
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ssati"]
-shader = SubResource("Shader_sshht")
+shader = ExtResource("3_n4fy8")
 shader_parameter/position = Vector2(0, 0)
 shader_parameter/radius = 0.0
 shader_parameter/border_width = 0.02
 shader_parameter/burn_mult = 0.135
 shader_parameter/noise_texture = SubResource("NoiseTexture2D_jm0w6")
 shader_parameter/burn_color = Color(0.7952149, 0.53127176, 0.08175241, 1)
+shader_parameter/mouse_uv = Vector2(-1, -1)
+shader_parameter/rotation_strength = 1.2
+shader_parameter/is_selected = false
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_5pexs"]
 load_path = "res://.godot/imported/numbers_and_suits.svg-b262cd349cfba770a284b0bd245cd438.ctex"

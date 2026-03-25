@@ -6,13 +6,14 @@
 [ext_resource type="Curve" uid="uid://bkauepf0rgyhp" path="res://entities/player/hand/art/hand_curve.tres" id="5_t1iv0"]
 [ext_resource type="Curve" uid="uid://c28w34oih0wmx" path="res://entities/player/hand/art/rotation_curve.tres" id="6_71y6p"]
 [ext_resource type="Script" uid="uid://cbdofec84tf02" path="res://entities/player/hand/inspect_hand_component.gd" id="6_oddmt"]
-[ext_resource type="Script" path="res://entities/player/hand/player_hand.gd" id="7_oddmt"]
+[ext_resource type="Script" uid="uid://ct8ewq3iao8hy" path="res://entities/player/hand/player_hand.gd" id="7_oddmt"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_t1iv0"]
 shader = ExtResource("1_5jufm")
 shader_parameter/outline_color = Color(0.32941177, 0.12156863, 0.33333334, 1)
 shader_parameter/line_thickness = 0.5
-shader_parameter/angle = 0.0
+shader_parameter/mouse_uv = Vector2(-1, -1)
+shader_parameter/rotation_strength = 1.2
 
 [node name="PlayerManager" type="Node2D" unique_id=1042850570]
 material = SubResource("ShaderMaterial_t1iv0")
@@ -23,8 +24,10 @@ unique_name_in_owner = true
 script = ExtResource("3_5jufm")
 hand_curve = ExtResource("5_t1iv0")
 rotation_curve = ExtResource("6_71y6p")
+side_offset = null
 max_rotation_deg = 15.0
 x_sep = 15.0
+y_min = null
 y_max = -40.0
 metadata/_custom_type_script = "uid://dfmsqqll1jgfh"
 

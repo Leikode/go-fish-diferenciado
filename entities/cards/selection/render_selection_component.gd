@@ -34,13 +34,25 @@ func fade_others(selected: String) -> void:
 	for selection_card in affected_nodes:
 		selection_card.burn_card(tween)
 		selection_card.set_process_input(false)
+		selection_card.set_process(false)
 
 	get_parent().get_node(selected).highlight_card(is_number, tween)
 
 	selected_node.set_process_input(false)
+	selected_node.set_process(false)
+	selected_node.material.set_shader_parameter("mouse_uv", Vector2(-1., -1.))
+	selected_node.material.set_shader_parameter("is_selected", true)
 
 	for child in get_parent().get_children():
 		var child_name: String = child.name
 		if child_name.contains("Suit") and !child.visible:
 			child.visible = true
 			child.set_process_input(true)
+			child.set_process(true)
+
+	if !is_number:
+		var parent: Selection = get_parent()
+		parent.trigger_select_player.emit(
+			parent.selected_number,
+			parent.selected_suit,
+		)

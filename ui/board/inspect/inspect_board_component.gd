@@ -4,6 +4,10 @@ extends Node2D
 const COLLISION_MASK_CARD: int = 3
 var screen_size
 
+var current_selected_card: CardData = CardData.new(-1, "")
+
+signal selected_opponent(opponent: OpponentManager, card: CardData)
+
 
 func _ready() -> void:
 	screen_size = get_viewport_rect().size
@@ -17,9 +21,12 @@ func _exit_tree() -> void:
 func _input(event):
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		if event.pressed:
-			var card = raycast_check_for_card()
-			if card:
-				print("CLICOU NO OPONENTE")
+			var card: OpponentHandArea = raycast_check_for_card()
+			if card and current_selected_card.number != -1:
+				var opponent: OpponentManager = card.get_parent()
+				selected_opponent.emit(opponent, current_selected_card)
+				current_selected_card = CardData.new(-1, "")
+				set_process_input(false)
 
 
 func raycast_check_for_card():
@@ -32,3 +39,9 @@ func raycast_check_for_card():
 	if result.size() > 0:
 		return result[0].collider
 	return null
+
+
+func on_opponent_selection(number: int, suit: String) -> void:
+	var card: CardData = CardData.new(number, suit)
+	current_selected_card = card
+	set_process_input(true)

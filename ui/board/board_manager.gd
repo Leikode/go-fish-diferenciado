@@ -17,8 +17,6 @@ var player_id_to_direction: Dictionary = {
 	3: Vector2(-1., 0.),
 }
 
-var _player_turn: int = 1
-
 
 func _ready() -> void:
 	NetworkManager.message_received.connect(_on_message_received)
@@ -26,6 +24,11 @@ func _ready() -> void:
 	NetworkManager.player_left.connect(_on_player_left)
 
 	_spawn_players()
+
+	selection.trigger_select_player.connect(
+		inspect_board_component.on_opponent_selection,
+	)
+	inspect_board_component.selected_opponent.connect(_on_player_buy_from_opponent_request)
 
 	if GameState.is_host():
 		_host_distribute_cards()
@@ -59,7 +62,6 @@ func _spawn_players() -> void:
 
 func _host_distribute_cards() -> void:
 	deck_manager.distribute_to(GameState.player_ids())
-
 	_local_player.receive_cards(deck_manager.get_hand_for(GameState.local_player_id), deck_manager)
 
 	_broadcast_start_hand()
@@ -80,13 +82,6 @@ func _broadcast_start_hand() -> void:
 		)
 
 
-func play_card_local(card: CardData) -> void:
-	_local_player.remove_card(card, deck_manager)
-	deck_manager.remove_card(card)
-
-	NetworkManager.send(NetworkMessageBuilder.play_card(card.to_key()))
-
-
 func _on_message_received(msg: Dictionary) -> void:
 	match msg.get("action", ""):
 		"start_hand":
@@ -99,6 +94,18 @@ func _on_message_received(msg: Dictionary) -> void:
 		"player_turn":
 			_handle_player_turn(
 				int(msg.get("player_in_turn")),
+			)
+		"buy_card_request":
+			_evaluate_player_buy_request(
+				int(msg.get("from")),
+				msg.get("card"),
+			)
+		"buy_card_response":
+			_handle_buy_card_response(
+				int(msg.get("from")),
+				int(msg.get("player_in_turn")),
+				msg.get("card"),
+				msg.get("accepted"),
 			)
 
 
@@ -146,6 +153,61 @@ func _handle_player_turn(player_in_turn: int) -> void:
 		return
 
 	selection.handle_selection()
+
+
+func _evaluate_player_buy_request(player_in_turn: int, card: String) -> void:
+	var parsed_card: CardData = CardData.from_key(card)
+	var player_has_card: bool = _local_player.evaluate_buy_request_from_opponent(
+		player_in_turn,
+		parsed_card,
+		deck_manager,
+	)
+
+	NetworkManager.send(
+		NetworkMessageBuilder.buy_card_response(
+			player_in_turn,
+			GameState.local_player_id,
+			card,
+			player_has_card,
+		),
+	)
+
+
+func _on_player_buy_from_opponent_request(opponent: OpponentManager, card: CardData) -> void:
+	NetworkManager.send(
+		NetworkMessageBuilder.buy_card_request(
+			GameState.local_player_id,
+			opponent.opponent_id,
+			card.to_key(),
+		),
+	)
+
+
+func _handle_buy_card_response(
+		from: int,
+		player_in_turn: int,
+		card: String,
+		accepted: bool,
+) -> void:
+	if GameState.local_player_id == player_in_turn:
+		if !accepted:
+			NetworkManager.send(
+				{
+					"action": "player_turn",
+					"player_in_turn": (GameState.local_player_id % GameState.players.size()) + 1,
+				},
+			)
+		else:
+			_local_player.add_card(from, CardData.from_key(card), deck_manager)
+	else:
+		for opponent in _opponents.values():
+			if opponent.opponent_id != player_in_turn and opponent.opponent_id != from:
+				opponent.handle_other_players_buy_response(
+					from,
+					player_in_turn,
+					CardData.from_key(card),
+					accepted,
+				)
 
 
 func _on_player_left(player_id: int, _name: String) -> void:

@@ -64,10 +64,31 @@ var colors: Dictionary[int, Vector3] = {
 	),
 }
 
+var to_opponent_position: Dictionary[int, Vector2]
+
 
 func setup(player_manager: PlayerManager) -> void:
 	_parent = player_manager
 	viewport_size = get_viewport().get_visible_rect().size
+	var center_of_screen: Vector2 = get_viewport().get_visible_rect().size / 2.
+	to_opponent_position = {
+		0: Vector2(
+			center_of_screen.x + (0. * GameConstants.OPPONENT_CARDS_OFFSET.x),
+			center_of_screen.y + (1. * GameConstants.OPPONENT_CARDS_OFFSET.y),
+		),
+		1: Vector2(
+			center_of_screen.x + (1. * GameConstants.OPPONENT_CARDS_OFFSET.x),
+			center_of_screen.y + (0. * GameConstants.OPPONENT_CARDS_OFFSET.y),
+		),
+		2: Vector2(
+			center_of_screen.x + (0. * GameConstants.OPPONENT_CARDS_OFFSET.x),
+			center_of_screen.y + (-1. * GameConstants.OPPONENT_CARDS_OFFSET.y),
+		),
+		3: Vector2(
+			center_of_screen.x + (-1. * GameConstants.OPPONENT_CARDS_OFFSET.x),
+			center_of_screen.y + (0. * GameConstants.OPPONENT_CARDS_OFFSET.y),
+		),
+	}
 
 
 func receive_cards(cards: Array[CardData], deck_manager: DeckManager) -> void:
@@ -75,14 +96,28 @@ func receive_cards(cards: Array[CardData], deck_manager: DeckManager) -> void:
 	_render_hand(deck_manager)
 
 
-func add_card(card: CardData, deck_manager: DeckManager) -> void:
+func add_card(from: int, card: CardData, deck_manager: DeckManager) -> Array[CardData]:
+	var opponent_pos: Vector2 = to_opponent_position[(GameState.local_player_id - from + 4) % 4]
+
+	_animate_add_card(opponent_pos, card, deck_manager)
+
 	_cards.append(card)
+	_cards.sort_custom(func(a, b): return a.number < b.number)
 	_render_hand(deck_manager)
 
+	return _cards
 
-func remove_card(card: CardData, deck_manager: DeckManager) -> void:
+
+func remove_card(from: int, card: CardData, deck_manager: DeckManager) -> Array[CardData]:
+	var opponent_pos: Vector2 = to_opponent_position[(GameState.local_player_id - from + 4) % 4]
+
+	_animate_remove_card(opponent_pos, card, deck_manager)
+
 	_cards = _cards.filter(func(c): return c.to_key() != card.to_key())
+	_cards.sort_custom(func(a, b): return a.number < b.number)
 	_render_hand(deck_manager)
+
+	return _cards
 
 
 func _render_hand(deck_manager: DeckManager) -> void:
@@ -171,3 +206,53 @@ func _create_card_texture(region: Rect2, padding: int = 4) -> Texture2D:
 
 	var tex := ImageTexture.create_from_image(img)
 	return tex
+
+
+func _animate_add_card(opponent_position: Vector2, card: CardData, deck_manager: DeckManager) -> void:
+	var add_card_tween: Tween = create_tween()
+
+	var sprite_size: Vector2i = deck_manager.get_card_size()
+	var rect_origin: Vector2i = deck_manager.get_rect_for(card)
+	var region: Rect2 = Rect2(rect_origin, sprite_size)
+	var sprite: Sprite2D = Sprite2D.new()
+	sprite.texture = cards_texture
+	sprite.region_enabled = true
+	sprite.region_rect = region
+	sprite.name = "AddingCardSprite"
+
+	sprite.scale *= GameConstants.SCALE_MULTIPLIER
+
+	sprite.position = opponent_position
+
+	add_child(sprite)
+
+	add_card_tween.tween_property(sprite, "position", Vector2(viewport_size.x / 2., GameConstants.CARD_Y_OFFSET), 1.)
+
+	await add_card_tween.finished
+
+	sprite.queue_free()
+
+
+func _animate_remove_card(opponent_position: Vector2, card: CardData, deck_manager: DeckManager) -> void:
+	var add_card_tween: Tween = create_tween()
+
+	var sprite_size: Vector2i = deck_manager.get_card_size()
+	var rect_origin: Vector2i = deck_manager.get_rect_for(card)
+	var region: Rect2 = Rect2(rect_origin, sprite_size)
+	var sprite: Sprite2D = Sprite2D.new()
+	sprite.texture = cards_texture
+	sprite.region_enabled = true
+	sprite.region_rect = region
+	sprite.name = "AddingCardSprite"
+
+	sprite.scale *= GameConstants.SCALE_MULTIPLIER
+
+	sprite.position = Vector2(viewport_size.x / 2., GameConstants.CARD_Y_OFFSET)
+
+	add_child(sprite)
+
+	add_card_tween.tween_property(sprite, "position", opponent_position, 1.)
+
+	await add_card_tween.finished
+
+	sprite.queue_free()

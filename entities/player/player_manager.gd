@@ -17,6 +17,7 @@ func _ready() -> void:
 
 
 func receive_cards(cards: Array[CardData], deck_manager: DeckManager) -> void:
+	cards.sort_custom(func(a, b): return a.number < b.number)
 	cards = _check_for_points(cards)
 	render_hand_component.receive_cards(cards, deck_manager)
 	player_hand.reset_signals()
@@ -25,14 +26,40 @@ func receive_cards(cards: Array[CardData], deck_manager: DeckManager) -> void:
 	)
 
 
-func add_card(card: CardData, deck_manager: DeckManager) -> void:
-	render_hand_component.add_card(card, deck_manager)
-	player_hand.reset_signals()
+func evaluate_buy_request_from_opponent(player_in_turn: int, card: CardData, deck_manager: DeckManager) -> bool:
+	var has_card: bool = player_has_card(card)
+
+	if has_card:
+		remove_card(player_in_turn, card, deck_manager)
+	else:
+		print(["NAO CONSEGUIU COMPRAR", card.to_key()])
+	# TODO: COLOCAR UM ELSE PARA MOSTRAR QUAL CARTA NÃO SE PÔDE COMPRAR
+
+	return has_card
 
 
-func remove_card(card: CardData, deck_manager: DeckManager) -> void:
-	render_hand_component.remove_card(card, deck_manager)
-	player_hand.reset_signals()
+func player_has_card(card: CardData) -> bool:
+	var key: String = card.to_key()
+
+	for child_card in player_hand.get_children():
+		if child_card.name.contains(key):
+			return true
+	return false
+
+
+func add_card(from: int, card: CardData, deck_manager: DeckManager) -> void:
+	var cards: Array[CardData] = render_hand_component.add_card(from, card, deck_manager)
+	cards = _check_for_points(cards)
+	NetworkManager.send(
+		NetworkMessageBuilder.report_number_of_cards(GameState.local_player_id, cards.size()),
+	)
+
+
+func remove_card(from: int, card: CardData, deck_manager: DeckManager) -> void:
+	var cards: Array[CardData] = render_hand_component.remove_card(from, card, deck_manager)
+	NetworkManager.send(
+		NetworkMessageBuilder.report_number_of_cards(GameState.local_player_id, cards.size()),
+	)
 
 
 func on_hovered_on(card: Card) -> void:
@@ -44,8 +71,6 @@ func on_hovered_off(card: Card) -> void:
 
 
 func _check_for_points(cards: Array[CardData]) -> Array[CardData]:
-	cards.sort_custom(func(a, b): return a.number < b.number)
-
 	var number: int = -1
 	var count: int = 0
 	var numbers_to_remove: Array[int] = []

@@ -5,6 +5,10 @@ extends Node2D
 
 signal activate_input_for_selection(only_numbers: bool)
 signal fade_others(selected: String)
+signal trigger_select_player(number: int, suit: String)
+
+var selected_number: int = -1
+var selected_suit: String = ""
 
 
 func _ready() -> void:
