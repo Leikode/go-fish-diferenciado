@@ -1,6 +1,16 @@
 [gd_scene format=3 uid="uid://bwii6eivj5d24"]
 
 [ext_resource type="Script" uid="uid://od2x4tpq5mx4" path="res://ui/lobby/lobby.gd" id="1_l4sf2"]
+[ext_resource type="Theme" uid="uid://djep1pu4ak2s7" path="res://common/fonts/game_font.tres" id="2_rdn6r"]
+[ext_resource type="FontFile" uid="uid://dcf7mnch1fl7w" path="res://common/fonts/PoLigon-Yqxvv.otf" id="3_8l8ni"]
+
+[sub_resource type="Theme" id="Theme_8l8ni"]
+default_font = ExtResource("3_8l8ni")
+default_font_size = 30
+
+[sub_resource type="Theme" id="Theme_kamvt"]
+default_font = ExtResource("3_8l8ni")
+default_font_size = 18
 
 [node name="Lobby" type="Control" unique_id=562661937]
 layout_mode = 3
@@ -10,23 +20,32 @@ script = ExtResource("1_l4sf2")
 [node name="StatusLabel" type="Label" parent="." unique_id=1033058668]
 unique_name_in_owner = true
 layout_mode = 0
-offset_left = 425.0
-offset_top = 113.0
-offset_right = 695.95
-offset_bottom = 136.0
+offset_left = 827.0
+offset_top = 439.0
+offset_right = 1067.0
+offset_bottom = 492.0
+theme = ExtResource("2_rdn6r")
+text = "Teste"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="StartButton" type="Button" parent="." unique_id=1993375879]
 unique_name_in_owner = true
 layout_mode = 0
-offset_left = 486.0
-offset_top = 185.0
-offset_right = 613.9999
-offset_bottom = 217.0
+offset_left = 827.0
+offset_top = 511.0
+offset_right = 1068.0
+offset_bottom = 560.0
+theme = SubResource("Theme_8l8ni")
+text = "Start Game"
 
 [node name="PlayersList" type="VBoxContainer" parent="." unique_id=641215607]
 unique_name_in_owner = true
+clip_contents = true
+custom_minimum_size = Vector2(250, 58)
 layout_mode = 0
-offset_left = 781.0
-offset_top = 144.0
-offset_right = 1026.085
-offset_bottom = 358.155
+offset_left = 827.0
+offset_top = 606.0
+offset_right = 1077.0
+offset_bottom = 664.0
+theme = SubResource("Theme_kamvt")

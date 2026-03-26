@@ -6,7 +6,8 @@
 [ext_resource type="PackedScene" uid="uid://dgs7neluoeyrp" path="res://entities/cards/deck_manager/deck_manager.tscn" id="3_wgwaw"]
 [ext_resource type="PackedScene" uid="uid://5jsb4k7lymuw" path="res://entities/player/player_manager.tscn" id="4_mr5re"]
 [ext_resource type="Script" uid="uid://dx7p03514ph62" path="res://ui/board/inspect/inspect_board_component.gd" id="6_s6fqi"]
-[ext_resource type="PackedScene" uid="uid://c1oklahvb1jwy" path="res://entities/cards/selection/selection.tscn" id="7_rsfuk"]
+[ext_resource type="PackedScene" uid="uid://c1oklahvb1jwy" path="res://entities/cards/selection/selection_manager.tscn" id="7_rsfuk"]
+[ext_resource type="PackedScene" uid="uid://y8pkpt7b7vvb" path="res://ui/board/game_state/render_game_state_manager.tscn" id="8_cou4y"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_idiba"]
 shader = ExtResource("2_xmhil")
@@ -16,12 +17,13 @@ shader_parameter/square_size = 84.7690039790275
 shader_parameter/speed = 0.50000002375
 shader_parameter/direction = Vector2(0, 1)
 
-[node name="BoardManager" type="Node2D" unique_id=1629256695 node_paths=PackedStringArray("deck_manager", "selection")]
+[node name="BoardManager" type="Node2D" unique_id=1629256695 node_paths=PackedStringArray("deck_manager", "selection", "render_game_state_manager")]
 script = ExtResource("1_mr5re")
 deck_manager = NodePath("DeckManager")
-selection = NodePath("Selection")
+selection = NodePath("SelectionManager")
 player_scene = ExtResource("4_mr5re")
 opponent_scene = ExtResource("3_jx4sq")
+render_game_state_manager = NodePath("RenderGameStateManager")
 
 [node name="BoardCamera" type="Camera2D" parent="." unique_id=1805447144]
 limit_left = 0
@@ -45,8 +47,10 @@ grow_vertical = 2
 
 [node name="DeckManager" parent="." unique_id=694223443 instance=ExtResource("3_wgwaw")]
 
+[node name="SelectionManager" parent="." unique_id=1634089980 instance=ExtResource("7_rsfuk")]
+
 [node name="InspectBoardComponent" type="Node2D" parent="." unique_id=625608265]
 unique_name_in_owner = true
 script = ExtResource("6_s6fqi")
 
-[node name="Selection" parent="." unique_id=1634089980 instance=ExtResource("7_rsfuk")]
+[node name="RenderGameStateManager" parent="." unique_id=1650256839 instance=ExtResource("8_cou4y")]

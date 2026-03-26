@@ -21,6 +21,7 @@ func _ready() -> void:
 
 func _on_lobby_updated(players: Array, host_id: int) -> void:
 	GameState.host_id = host_id
+	GameState.players = players
 
 	start_button.visible = GameState.is_host()
 

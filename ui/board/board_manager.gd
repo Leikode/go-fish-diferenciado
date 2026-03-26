@@ -1,9 +1,11 @@
+class_name BoardManager
 extends Node2D
 
 @export var deck_manager: DeckManager
-@export var selection: Selection
+@export var selection: SelectionManager
 @export var player_scene: PackedScene
 @export var opponent_scene: PackedScene
+@export var render_game_state_manager: RenderGameStateManager
 
 @onready var inspect_board_component: InspectBoardComponent = %InspectBoardComponent
 
@@ -17,11 +19,15 @@ var player_id_to_direction: Dictionary = {
 	3: Vector2(-1., 0.),
 }
 
+signal activate_selection
+
 
 func _ready() -> void:
 	NetworkManager.message_received.connect(_on_message_received)
 	NetworkManager.disconnected.connect(_on_disconnected)
 	NetworkManager.player_left.connect(_on_player_left)
+
+	render_game_state_manager.setup(self)
 
 	_spawn_players()
 
@@ -29,6 +35,9 @@ func _ready() -> void:
 		inspect_board_component.on_opponent_selection,
 	)
 	inspect_board_component.selected_opponent.connect(_on_player_buy_from_opponent_request)
+	activate_selection.connect(
+		selection.handle_selection,
+	)
 
 	if GameState.is_host():
 		_host_distribute_cards()
@@ -152,16 +161,23 @@ func _handle_player_turn(player_in_turn: int) -> void:
 	if GameState.local_player_id != player_in_turn:
 		return
 
-	selection.handle_selection()
+	activate_selection.emit()
 
 
 func _evaluate_player_buy_request(player_in_turn: int, card: String) -> void:
 	var parsed_card: CardData = CardData.from_key(card)
 	var player_has_card: bool = _local_player.evaluate_buy_request_from_opponent(
-		player_in_turn,
 		parsed_card,
-		deck_manager,
 	)
+
+	var from: int = player_in_turn
+	var from_name: String = GameState.get_player_name(GameState.local_player_id)
+	var to_name: String = GameState.get_player_name(from)
+	if player_has_card:
+		render_game_state_manager.show_buyed_card(parsed_card, from_name, to_name, player_in_turn)
+		_local_player.remove_card(player_in_turn, parsed_card, deck_manager)
+	else:
+		render_game_state_manager.show_negated_card(parsed_card, from_name, to_name)
 
 	NetworkManager.send(
 		NetworkMessageBuilder.buy_card_response(
@@ -174,6 +190,8 @@ func _evaluate_player_buy_request(player_in_turn: int, card: String) -> void:
 
 
 func _on_player_buy_from_opponent_request(opponent: OpponentManager, card: CardData) -> void:
+	selection.visible = false
+
 	NetworkManager.send(
 		NetworkMessageBuilder.buy_card_request(
 			GameState.local_player_id,
@@ -189,8 +207,12 @@ func _handle_buy_card_response(
 		card: String,
 		accepted: bool,
 ) -> void:
+	var parsed_card: CardData = CardData.from_key(card)
 	if GameState.local_player_id == player_in_turn:
+		var from_name: String = GameState.get_player_name(from)
+		var to_name: String = GameState.get_player_name(GameState.local_player_id)
 		if !accepted:
+			render_game_state_manager.show_negated_card(parsed_card, from_name, to_name)
 			NetworkManager.send(
 				{
 					"action": "player_turn",
@@ -198,23 +220,21 @@ func _handle_buy_card_response(
 				},
 			)
 		else:
+			render_game_state_manager.show_buyed_card(parsed_card, from_name, to_name, player_in_turn)
 			_local_player.add_card(from, CardData.from_key(card), deck_manager)
 	else:
-		for opponent in _opponents.values():
-			if opponent.opponent_id != player_in_turn and opponent.opponent_id != from:
-				opponent.handle_other_players_buy_response(
-					from,
-					player_in_turn,
-					CardData.from_key(card),
-					accepted,
-				)
+		var to: int = player_in_turn
+		var from_name: String = GameState.get_player_name(from)
+		var to_name: String = GameState.get_player_name(to)
+
+		if !accepted:
+			render_game_state_manager.show_negated_card(parsed_card, from_name, to_name)
+		else:
+			render_game_state_manager.show_buyed_card(parsed_card, from_name, to_name, player_in_turn)
 
 
 func _on_player_left(player_id: int, _name: String) -> void:
-	var opponent: OpponentManager = _opponents.get(player_id)
-	if opponent:
-		opponent.queue_free()
-		_opponents.erase(player_id)
+	get_tree().change_scene_to_file("res://ui/login/login.tscn")
 
 
 func _on_disconnected() -> void:

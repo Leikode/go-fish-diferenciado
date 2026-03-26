@@ -1,0 +1,54 @@
+[gd_scene format=3 uid="uid://y8pkpt7b7vvb"]
+
+[ext_resource type="Script" uid="uid://8b23pciuaqad" path="res://ui/board/game_state/render_game_state_manager.gd" id="1_q1qwn"]
+[ext_resource type="Theme" uid="uid://djep1pu4ak2s7" path="res://common/fonts/game_font.tres" id="2_bxlmd"]
+
+[node name="RenderGameStateManager" type="Control" unique_id=1650256839 node_paths=PackedStringArray("from_label", "to_label", "player_turn")]
+layout_mode = 3
+anchors_preset = 0
+offset_top = 200.0
+offset_bottom = 200.0
+script = ExtResource("1_q1qwn")
+from_label = NodePath("From")
+to_label = NodePath("To")
+player_turn = NodePath("PlayerTurn")
+
+[node name="From" type="Label" parent="." unique_id=382190532]
+clip_contents = true
+custom_minimum_size = Vector2(96, 32)
+layout_mode = 0
+offset_left = 875.0
+offset_top = 282.0
+offset_right = 1045.0
+offset_bottom = 324.0
+theme = ExtResource("2_bxlmd")
+text = "Leikoden 
+quer comprar a carta:"
+horizontal_alignment = 1
+text_overrun_behavior = 3
+
+[node name="To" type="Label" parent="." unique_id=1981103514]
+clip_contents = true
+custom_minimum_size = Vector2(96, 32)
+layout_mode = 0
+offset_left = 875.0
+offset_top = 440.0
+offset_right = 1045.0
+offset_bottom = 482.0
+theme = ExtResource("2_bxlmd")
+text = "De:
+Jogador 2"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="PlayerTurn" type="Label" parent="." unique_id=741782349]
+layout_mode = 0
+offset_left = 875.0
+offset_top = 382.0
+offset_right = 1045.0
+offset_bottom = 424.0
+theme = ExtResource("2_bxlmd")
+text = "É o turno de
+Leikoden"
+horizontal_alignment = 1
+text_overrun_behavior = 3

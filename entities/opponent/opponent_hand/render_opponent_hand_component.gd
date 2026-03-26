@@ -31,6 +31,7 @@ func render_hand(name: String, direction: Vector2, number_of_cards: int) -> void
 	get_parent().add_child(sprite)
 
 	var cards_label: Label = Label.new()
+	cards_label.theme = GameConstants.GAME_FONT
 	cards_label.text = "%s / %d" % [name, number_of_cards]
 	cards_label.position = Vector2(
 		-((GameConstants.OPPONENT_CARDS_SIZE.x * GameConstants.SCALE_MULTIPLIER) / 2.),

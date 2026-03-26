@@ -26,14 +26,8 @@ func receive_cards(cards: Array[CardData], deck_manager: DeckManager) -> void:
 	)
 
 
-func evaluate_buy_request_from_opponent(player_in_turn: int, card: CardData, deck_manager: DeckManager) -> bool:
+func evaluate_buy_request_from_opponent(card: CardData) -> bool:
 	var has_card: bool = player_has_card(card)
-
-	if has_card:
-		remove_card(player_in_turn, card, deck_manager)
-	else:
-		print(["NAO CONSEGUIU COMPRAR", card.to_key()])
-	# TODO: COLOCAR UM ELSE PARA MOSTRAR QUAL CARTA NÃO SE PÔDE COMPRAR
 
 	return has_card
 

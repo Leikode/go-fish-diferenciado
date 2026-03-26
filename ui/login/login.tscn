@@ -1,33 +1,45 @@
 [gd_scene format=3 uid="uid://dgkufjs82x1wn"]
 
 [ext_resource type="Script" uid="uid://c0fcs062rfpv3" path="res://ui/login/login.gd" id="1_ntsjo"]
+[ext_resource type="Theme" uid="uid://djep1pu4ak2s7" path="res://common/fonts/game_font.tres" id="1_yg3i8"]
+[ext_resource type="FontFile" uid="uid://dcf7mnch1fl7w" path="res://common/fonts/PoLigon-Yqxvv.otf" id="3_j4qit"]
+
+[sub_resource type="Theme" id="Theme_54mff"]
+default_font = ExtResource("3_j4qit")
+default_font_size = 21
 
 [node name="Login" type="Control" unique_id=493552888]
 layout_mode = 3
 anchors_preset = 0
+theme = ExtResource("1_yg3i8")
 script = ExtResource("1_ntsjo")
 
 [node name="NameInput" type="LineEdit" parent="." unique_id=1381526753]
 unique_name_in_owner = true
 layout_mode = 0
-offset_left = 426.0
-offset_top = 214.0
-offset_right = 603.75
-offset_bottom = 245.0
+offset_left = 881.0
+offset_top = 508.0
+offset_right = 1058.75
+offset_bottom = 539.0
+theme = ExtResource("1_yg3i8")
 
 [node name="ConnectButton" type="Button" parent="." unique_id=1927199457]
 unique_name_in_owner = true
 layout_mode = 0
-offset_left = 441.0
-offset_top = 255.0
-offset_right = 587.0
-offset_bottom = 286.0
+offset_left = 882.0
+offset_top = 548.0
+offset_right = 1058.0
+offset_bottom = 592.0
+theme = SubResource("Theme_54mff")
 text = "Connect to Server"
 
 [node name="StatusLabel" type="Label" parent="." unique_id=782520100]
 unique_name_in_owner = true
 layout_mode = 0
-offset_left = 426.0
-offset_top = 190.0
-offset_right = 603.0
-offset_bottom = 213.0
+offset_left = 881.0
+offset_top = 484.0
+offset_right = 1058.0
+offset_bottom = 507.0
+theme = ExtResource("1_yg3i8")
+horizontal_alignment = 1
+vertical_alignment = 1

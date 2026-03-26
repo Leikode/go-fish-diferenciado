@@ -11,4 +11,5 @@ const OPPONENT_CARDS_RECT: Vector2i = Vector2i(364, 99)
 const OPPONENT_CARDS_SIZE: Vector2i = Vector2i(32, 48)
 const OPPONENT_CARDS_OFFSET: Vector2 = Vector2(640.0, 360.0)
 
-const SERVER_URL := "ws://186.202.209.213:8080/ws"
+const SERVER_URL: String = "ws://186.202.209.213:8080/ws"
+const GAME_FONT: Theme = preload("res://common/fonts/game_font.tres")

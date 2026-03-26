@@ -12,7 +12,3 @@ var points: int = 0
 
 func display_number_of_cards(direction: Vector2) -> void:
 	opponent_hand.render_hand(opponent_name, direction, number_of_cards)
-
-
-func handle_other_players_buy_response(from: int, to: int, card: CardData) -> void:
-	print([from, to, card])

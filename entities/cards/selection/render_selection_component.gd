@@ -1,12 +1,21 @@
 class_name RenderSelectionComponent
 extends Node2D
 
+# TODO: Achar quem está pontuado e tirar da exibição
+var out_numbers: Array[String] = []
+
+
 func render_selection() -> void:
-	var parent: Selection = get_parent()
+	var parent: SelectionManager = get_parent()
 	parent.visible = true
 
 	for child in get_parent().get_children():
 		var child_name: String = child.name
+
+		if child_name.contains("Number") or child_name.contains("Suit"):
+			child.material.set_shader_parameter("radius", 0.)
+			child.material.set_shader_parameter("is_selected", false)
+
 		if child_name.contains("Number"):
 			child.visible = true
 
@@ -51,7 +60,7 @@ func fade_others(selected: String) -> void:
 			child.set_process(true)
 
 	if !is_number:
-		var parent: Selection = get_parent()
+		var parent: SelectionManager = get_parent()
 		parent.trigger_select_player.emit(
 			parent.selected_number,
 			parent.selected_suit,

@@ -4,8 +4,11 @@ extends Sprite2D
 var texture_size: Vector2 = Vector2()
 var selection_rect: Rect2
 
+var default_pos: Vector2
+
 
 func _ready():
+	default_pos = position
 	set_process_input(false)
 	set_process(false)
 	get_parent().activate_input_for_selection.connect(_on_activate_input_for_selection)
@@ -15,6 +18,8 @@ func _ready():
 
 
 func _on_activate_input_for_selection(only_numbers: bool):
+	position = default_pos
+	visible = true
 	if only_numbers and name.contains("Number"):
 		set_process_input(true)
 		set_process(true)
@@ -42,7 +47,7 @@ func _input(event):
 		var world_pos: Vector2 = get_global_mouse_position()
 
 		if selection_rect.has_point(world_pos):
-			var parent: Selection = get_parent()
+			var parent: SelectionManager = get_parent()
 			if name.contains("Number"):
 				parent.selected_number = int(str(name).trim_prefix("Number"))
 			else:

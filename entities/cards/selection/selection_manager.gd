@@ -1,4 +1,4 @@
-class_name Selection
+class_name SelectionManager
 extends Node2D
 
 @onready var render_selection_component: RenderSelectionComponent = %RenderSelectionComponent
@@ -16,6 +16,8 @@ func _ready() -> void:
 
 
 func handle_selection():
+	selected_number = -1
+	selected_suit = ""
 	render_selection_component.render_selection()
 	activate_input_for_selection.emit(true)
 

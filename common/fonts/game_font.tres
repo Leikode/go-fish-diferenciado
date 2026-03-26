@@ -1,0 +1,7 @@
+[gd_resource type="Theme" format=3 uid="uid://djep1pu4ak2s7"]
+
+[ext_resource type="FontFile" uid="uid://dcf7mnch1fl7w" path="res://common/fonts/PoLigon-Yqxvv.otf" id="1_1erb4"]
+
+[resource]
+default_font = ExtResource("1_1erb4")
+default_font_size = 18

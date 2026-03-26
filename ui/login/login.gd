@@ -38,6 +38,7 @@ func _on_connection_failed() -> void:
 
 func _on_joined(player_id: int, _players: Array) -> void:
 	GameState.local_player_id = player_id
+	GameState.players = _players
 	get_tree().change_scene_to_file("res://ui/lobby/lobby.tscn")
 
 
