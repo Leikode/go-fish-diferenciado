@@ -28,6 +28,11 @@ func receive_cards(cards: Array[CardData], deck_manager: DeckManager) -> void:
 func evaluate_buy_request_from_opponent(card: CardData) -> bool:
 	var has_card: bool = player_has_card(card)
 
+	if has_card:
+		get_parent().buy_sound_effect.play()
+	else:
+		get_parent().negate_sound_effect.play()
+
 	return has_card
 
 

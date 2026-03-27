@@ -7,7 +7,9 @@
 [ext_resource type="AudioStream" uid="uid://cmwx1qrxx6rcw" path="res://ui/board/music/Gymnopédie No.1.ogg" id="4_4xbk6"]
 [ext_resource type="PackedScene" uid="uid://5jsb4k7lymuw" path="res://entities/player/player_manager.tscn" id="4_mr5re"]
 [ext_resource type="AudioStream" uid="uid://couqbvf3ycivu" path="res://entities/cards/selection/sound_effect/fxprosound-electronic-element-burn.mp3" id="5_3pt3k"]
+[ext_resource type="AudioStream" uid="uid://d1oc5s6xf06je" path="res://ui/board/inspect/sound_effect/collect-success.mp3" id="6_m8cga"]
 [ext_resource type="Script" uid="uid://dx7p03514ph62" path="res://ui/board/inspect/inspect_board_component.gd" id="6_s6fqi"]
+[ext_resource type="AudioStream" uid="uid://dlqrmdahk2ok1" path="res://ui/board/inspect/sound_effect/failure.mp3" id="7_7osak"]
 [ext_resource type="PackedScene" uid="uid://c1oklahvb1jwy" path="res://entities/cards/selection/selection_manager.tscn" id="7_rsfuk"]
 [ext_resource type="PackedScene" uid="uid://y8pkpt7b7vvb" path="res://ui/board/game_state/render_game_state_manager.tscn" id="8_cou4y"]
 
@@ -35,7 +37,7 @@ limit_bottom = 1080
 
 [node name="BackgroundMusic" type="AudioStreamPlayer" parent="." unique_id=438643488]
 stream = ExtResource("4_4xbk6")
-volume_db = 5.474
+volume_db = 1.687
 autoplay = true
 parameters/looping = true
 
@@ -43,6 +45,14 @@ parameters/looping = true
 unique_name_in_owner = true
 stream = ExtResource("5_3pt3k")
 volume_db = -3.649
+
+[node name="BuySoundEffect" type="AudioStreamPlayer" parent="." unique_id=843706083]
+unique_name_in_owner = true
+stream = ExtResource("6_m8cga")
+
+[node name="NegateSoundEffect" type="AudioStreamPlayer" parent="." unique_id=963920135]
+unique_name_in_owner = true
+stream = ExtResource("7_7osak")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1293984718]
 process_mode = 4

@@ -9,6 +9,8 @@ extends Node2D
 
 @onready var inspect_board_component: InspectBoardComponent = %InspectBoardComponent
 @onready var selection_sound_effect: AudioStreamPlayer = %SelectionSoundEffect
+@onready var buy_sound_effect: AudioStreamPlayer = %BuySoundEffect
+@onready var negate_sound_effect: AudioStreamPlayer = %NegateSoundEffect
 
 var _local_player: PlayerManager
 var _opponents: Dictionary[int, OpponentManager] = { }
