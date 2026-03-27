@@ -8,6 +8,7 @@ extends Node2D
 @export var render_game_state_manager: RenderGameStateManager
 
 @onready var inspect_board_component: InspectBoardComponent = %InspectBoardComponent
+@onready var selection_sound_effect: AudioStreamPlayer = %SelectionSoundEffect
 
 var _local_player: PlayerManager
 var _opponents: Dictionary[int, OpponentManager] = { }
@@ -74,7 +75,13 @@ func _host_distribute_cards() -> void:
 	_local_player.receive_cards(deck_manager.get_hand_for(GameState.local_player_id), deck_manager)
 
 	_broadcast_start_hand()
-	_handle_player_turn(GameState.local_player_id)
+	NetworkManager.send(
+		{
+			"action": "player_turn",
+			"player_in_turn": GameState.local_player_id,
+			"to": "all",
+		},
+	)
 
 
 func _broadcast_start_hand() -> void:
@@ -99,6 +106,7 @@ func _on_message_received(msg: Dictionary) -> void:
 			_display_opponent_number_of_cards(
 				int(msg.get("from")),
 				int(msg.get("value")),
+				int(msg.get("points")),
 			)
 		"player_turn":
 			_handle_player_turn(
@@ -131,9 +139,10 @@ func _handle_start_hand(hand_keys: Array) -> void:
 	_set_board_shader_direction(1)
 
 
-func _display_opponent_number_of_cards(opponent_id: int, number_of_cards: int) -> void:
+func _display_opponent_number_of_cards(opponent_id: int, number_of_cards: int, points: int) -> void:
 	var opponent: OpponentManager = _opponents[opponent_id]
 	opponent.number_of_cards = number_of_cards
+	opponent.points = points
 	opponent.display_number_of_cards(
 		player_id_to_direction[(GameState.local_player_id - opponent_id + 4) % 4],
 	)
@@ -158,6 +167,7 @@ func _set_board_shader_direction(current_player_id: int):
 
 func _handle_player_turn(player_in_turn: int) -> void:
 	_set_board_shader_direction(player_in_turn)
+	render_game_state_manager.show_player_turn(player_in_turn)
 	if GameState.local_player_id != player_in_turn:
 		return
 
@@ -217,6 +227,7 @@ func _handle_buy_card_response(
 				{
 					"action": "player_turn",
 					"player_in_turn": (GameState.local_player_id % GameState.players.size()) + 1,
+					"to": "all",
 				},
 			)
 		else:

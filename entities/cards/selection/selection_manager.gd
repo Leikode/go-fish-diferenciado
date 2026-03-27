@@ -24,3 +24,4 @@ func handle_selection():
 
 func _on_fade_others(selected: String) -> void:
 	render_selection_component.fade_others(selected)
+	get_parent().selection_sound_effect.playing = true

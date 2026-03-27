@@ -17,12 +17,11 @@ func _ready() -> void:
 
 
 func receive_cards(cards: Array[CardData], deck_manager: DeckManager) -> void:
-	cards.sort_custom(func(a, b): return a.number < b.number)
 	cards = _check_for_points(cards)
 	render_hand_component.receive_cards(cards, deck_manager)
 	player_hand.reset_signals()
 	NetworkManager.send(
-		NetworkMessageBuilder.report_number_of_cards(GameState.local_player_id, cards.size()),
+		NetworkMessageBuilder.report_number_of_cards(GameState.local_player_id, cards.size(), points),
 	)
 
 
@@ -43,16 +42,18 @@ func player_has_card(card: CardData) -> bool:
 
 func add_card(from: int, card: CardData, deck_manager: DeckManager) -> void:
 	var cards: Array[CardData] = render_hand_component.add_card(from, card, deck_manager)
-	cards = _check_for_points(cards)
+	var result: Array[CardData] = _check_for_points(cards)
+	render_hand_component.update_hand(result, deck_manager)
 	NetworkManager.send(
-		NetworkMessageBuilder.report_number_of_cards(GameState.local_player_id, cards.size()),
+		NetworkMessageBuilder.report_number_of_cards(GameState.local_player_id, result.size(), points),
 	)
 
 
 func remove_card(from: int, card: CardData, deck_manager: DeckManager) -> void:
 	var cards: Array[CardData] = render_hand_component.remove_card(from, card, deck_manager)
+	render_hand_component.update_hand(cards, deck_manager)
 	NetworkManager.send(
-		NetworkMessageBuilder.report_number_of_cards(GameState.local_player_id, cards.size()),
+		NetworkMessageBuilder.report_number_of_cards(GameState.local_player_id, cards.size(), points),
 	)
 
 
@@ -65,6 +66,8 @@ func on_hovered_off(card: Card) -> void:
 
 
 func _check_for_points(cards: Array[CardData]) -> Array[CardData]:
+	cards.sort_custom(func(a, b): return a.number < b.number)
+
 	var number: int = -1
 	var count: int = 0
 	var numbers_to_remove: Array[int] = []
@@ -78,6 +81,7 @@ func _check_for_points(cards: Array[CardData]) -> Array[CardData]:
 		if count == 4:
 			points += 1
 			numbers_to_remove.append(number)
+		number = card.number
 
 	var result: Array[CardData] = []
 	for card in cards:

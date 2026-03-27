@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://cmwx1qrxx6rcw"
+path="res://.godot/imported/Gymnopédie No.1.ogg-22157814961ba21df4874aa3f78b26fc.oggvorbisstr"
+
+[deps]
+
+source_file="res://ui/board/music/Gymnopédie No.1.ogg"
+dest_files=["res://.godot/imported/Gymnopédie No.1.ogg-22157814961ba21df4874aa3f78b26fc.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

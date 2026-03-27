@@ -49,8 +49,14 @@ func show_negated_card(card: CardData, name_from: String, name_to: String) -> vo
 	_animate_negate_card(card, name_from, name_to)
 
 
-func show_player_turn() -> void:
-	pass
+func show_player_turn(player_in_turn: int) -> void:
+	var player_in_turn_name: String = GameState.get_player_name(player_in_turn)
+
+	from_label.text = "É o turno de:\n%s" % player_in_turn_name if player_in_turn != GameState.local_player_id else "É o seu turno!"
+
+	await get_tree().create_timer(1.5).timeout
+
+	from_label.text = ""
 
 
 func _animate_buy_card(card: CardData, name_from: String, name_to: String, player_in_turn: int) -> void:

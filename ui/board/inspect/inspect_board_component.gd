@@ -21,15 +21,15 @@ func _exit_tree() -> void:
 func _input(event):
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		if event.pressed:
-			var card: OpponentHandArea = raycast_check_for_card()
-			if card and current_selected_card.number != -1:
+			var card: Variant = raycast_check_for_card()
+			if card and is_instance_of(card, OpponentHandArea) and current_selected_card.number != -1:
 				var opponent: OpponentManager = card.get_parent()
 				selected_opponent.emit(opponent, current_selected_card)
 				current_selected_card = CardData.new(-1, "")
 				set_process_input(false)
 
 
-func raycast_check_for_card():
+func raycast_check_for_card() -> Variant:
 	var space_state: PhysicsDirectSpaceState2D = get_viewport().world_2d.direct_space_state
 	var parameters: PhysicsPointQueryParameters2D = PhysicsPointQueryParameters2D.new()
 	parameters.position = get_viewport().get_mouse_position()

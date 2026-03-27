@@ -4,8 +4,10 @@ extends Node2D
 @onready var cards_texture: Texture2D = preload("res://entities/cards/art/Pixel_Playing_Card_Set_updated.svg")
 @onready var card_shader: Shader = preload("res://entities/cards/art/card.gdshader")
 
+var cards_label: Label = null
 
-func render_hand(name: String, direction: Vector2, number_of_cards: int) -> void:
+
+func render_hand(name_: String, direction: Vector2, number_of_cards: int) -> void:
 	var rect_origin: Vector2i = GameConstants.OPPONENT_CARDS_RECT
 	var card_size: Vector2i = GameConstants.OPPONENT_CARDS_SIZE
 	var region: Rect2 = Rect2(rect_origin, card_size)
@@ -30,14 +32,10 @@ func render_hand(name: String, direction: Vector2, number_of_cards: int) -> void
 	)
 	get_parent().add_child(sprite)
 
-	var cards_label: Label = Label.new()
-	cards_label.theme = GameConstants.GAME_FONT
-	cards_label.text = "%s / %d" % [name, number_of_cards]
-	cards_label.position = Vector2(
-		-((GameConstants.OPPONENT_CARDS_SIZE.x * GameConstants.SCALE_MULTIPLIER) / 2.),
-		-((GameConstants.OPPONENT_CARDS_SIZE.y * GameConstants.SCALE_MULTIPLIER) / 2.) - 24.,
-	)
-	get_parent().add_child(cards_label)
+	if !cards_label:
+		_create_cards_label(name_, number_of_cards)
+	else:
+		_update_cards_label(name_, number_of_cards)
 
 
 func _create_card_texture(region: Rect2, padding: int = 4) -> Texture2D:
@@ -58,3 +56,18 @@ func _create_card_texture(region: Rect2, padding: int = 4) -> Texture2D:
 
 	var tex := ImageTexture.create_from_image(img)
 	return tex
+
+
+func _create_cards_label(name_: String, number_of_cards: int) -> void:
+	cards_label = Label.new()
+	cards_label.theme = GameConstants.GAME_FONT
+	cards_label.text = "%s\nNumber of Cards: %d\nPoints: %d" % [name_, number_of_cards, get_parent().points]
+	cards_label.position = Vector2(
+		-((GameConstants.OPPONENT_CARDS_SIZE.x * GameConstants.SCALE_MULTIPLIER) / 2.),
+		-((GameConstants.OPPONENT_CARDS_SIZE.y * GameConstants.SCALE_MULTIPLIER) / 2.) - 70.,
+	)
+	get_parent().add_child(cards_label)
+
+
+func _update_cards_label(name_: String, number_of_cards: int) -> void:
+	cards_label.text = "%s\nNumber of Cards: %d\nPoints: %d" % [name_, number_of_cards, get_parent().points]

@@ -4,7 +4,9 @@
 [ext_resource type="Shader" uid="uid://cofttgxyow0ua" path="res://ui/board/board_bg.gdshader" id="2_xmhil"]
 [ext_resource type="PackedScene" uid="uid://dhuneeimjxjc5" path="res://entities/opponent/oponnent_manager.tscn" id="3_jx4sq"]
 [ext_resource type="PackedScene" uid="uid://dgs7neluoeyrp" path="res://entities/cards/deck_manager/deck_manager.tscn" id="3_wgwaw"]
+[ext_resource type="AudioStream" uid="uid://cmwx1qrxx6rcw" path="res://ui/board/music/Gymnopédie No.1.ogg" id="4_4xbk6"]
 [ext_resource type="PackedScene" uid="uid://5jsb4k7lymuw" path="res://entities/player/player_manager.tscn" id="4_mr5re"]
+[ext_resource type="AudioStream" uid="uid://couqbvf3ycivu" path="res://entities/cards/selection/sound_effect/fxprosound-electronic-element-burn.mp3" id="5_3pt3k"]
 [ext_resource type="Script" uid="uid://dx7p03514ph62" path="res://ui/board/inspect/inspect_board_component.gd" id="6_s6fqi"]
 [ext_resource type="PackedScene" uid="uid://c1oklahvb1jwy" path="res://entities/cards/selection/selection_manager.tscn" id="7_rsfuk"]
 [ext_resource type="PackedScene" uid="uid://y8pkpt7b7vvb" path="res://ui/board/game_state/render_game_state_manager.tscn" id="8_cou4y"]
@@ -30,6 +32,17 @@ limit_left = 0
 limit_top = 0
 limit_right = 1920
 limit_bottom = 1080
+
+[node name="BackgroundMusic" type="AudioStreamPlayer" parent="." unique_id=438643488]
+stream = ExtResource("4_4xbk6")
+volume_db = 5.474
+autoplay = true
+parameters/looping = true
+
+[node name="SelectionSoundEffect" type="AudioStreamPlayer" parent="." unique_id=235585365]
+unique_name_in_owner = true
+stream = ExtResource("5_3pt3k")
+volume_db = -3.649
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1293984718]
 process_mode = 4

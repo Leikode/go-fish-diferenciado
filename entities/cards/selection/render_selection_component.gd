@@ -1,10 +1,6 @@
 class_name RenderSelectionComponent
 extends Node2D
 
-# TODO: Achar quem está pontuado e tirar da exibição
-var out_numbers: Array[String] = []
-
-
 func render_selection() -> void:
 	var parent: SelectionManager = get_parent()
 	parent.visible = true

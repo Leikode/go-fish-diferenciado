@@ -72,26 +72,28 @@ func setup(player_manager: PlayerManager) -> void:
 
 func receive_cards(cards: Array[CardData], deck_manager: DeckManager) -> void:
 	_cards = cards
-	_render_hand(deck_manager)
+	render_hand(deck_manager)
 
 
 func add_card(from: int, card: CardData, deck_manager: DeckManager) -> Array[CardData]:
 	_cards.append(card)
-	_cards.sort_custom(func(a, b): return a.number < b.number)
-	_render_hand(deck_manager)
 
 	return _cards
 
 
 func remove_card(from: int, card: CardData, deck_manager: DeckManager) -> Array[CardData]:
 	_cards = _cards.filter(func(c): return c.to_key() != card.to_key())
-	_cards.sort_custom(func(a, b): return a.number < b.number)
-	_render_hand(deck_manager)
 
 	return _cards
 
 
-func _render_hand(deck_manager: DeckManager) -> void:
+func update_hand(cards: Array[CardData], deck_manager: DeckManager) -> void:
+	_cards = cards
+	_cards.sort_custom(func(a, b): return a.number < b.number)
+	render_hand(deck_manager)
+
+
+func render_hand(deck_manager: DeckManager) -> void:
 	for child in _parent.player_hand.get_children():
 		child.queue_free()
 
@@ -147,7 +149,7 @@ func _render_hand(deck_manager: DeckManager) -> void:
 		card_node.card = card
 		card_node.add_child(sprite)
 
-		_parent.player_hand.add_child(card_node)
+		_parent.player_hand.add_child(card_node, true)
 
 
 func _get_card_texture(card, region: Rect2) -> Texture2D:
