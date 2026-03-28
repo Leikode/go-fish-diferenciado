@@ -27,3 +27,7 @@ static func game_state(hand: Array[String]) -> Dictionary:
 
 static func report_number_of_cards(from: int, number_of_cards: int, points: int) -> Dictionary:
 	return { "action": "number_of_cards", "from": from, "value": number_of_cards, "points": points, "to": "others" }
+
+
+static func end_game(winners: Array[String]) -> Dictionary:
+	return { "action": "end_game", "to": "all", "winners": winners }

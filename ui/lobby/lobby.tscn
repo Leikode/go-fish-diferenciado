@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://od2x4tpq5mx4" path="res://ui/lobby/lobby.gd" id="1_l4sf2"]
 [ext_resource type="Theme" uid="uid://djep1pu4ak2s7" path="res://common/fonts/game_font.tres" id="2_rdn6r"]
 [ext_resource type="FontFile" uid="uid://dcf7mnch1fl7w" path="res://common/fonts/PoLigon-Yqxvv.otf" id="3_8l8ni"]
+[ext_resource type="Shader" uid="uid://cofttgxyow0ua" path="res://ui/board/board_bg.gdshader" id="4_kamvt"]
 
 [sub_resource type="Theme" id="Theme_8l8ni"]
 default_font = ExtResource("3_8l8ni")
@@ -11,6 +12,14 @@ default_font_size = 30
 [sub_resource type="Theme" id="Theme_kamvt"]
 default_font = ExtResource("3_8l8ni")
 default_font_size = 18
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_qp8cv"]
+shader = ExtResource("4_kamvt")
+shader_parameter/first_color = Color(0.13042137, 0.13296095, 0.20294157, 1)
+shader_parameter/second_color = Color(0.25024596, 0.1980657, 0.23234391, 1)
+shader_parameter/square_size = 84.7690039790275
+shader_parameter/speed = 0.50000002375
+shader_parameter/direction = Vector2(0, 1)
 
 [node name="Lobby" type="Control" unique_id=562661937]
 layout_mode = 3
@@ -49,3 +58,17 @@ offset_top = 606.0
 offset_right = 1077.0
 offset_bottom = 664.0
 theme = SubResource("Theme_kamvt")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=501988330]
+process_mode = 4
+layer = -1
+
+[node name="BoardBG" type="ColorRect" parent="CanvasLayer" unique_id=499600578]
+z_index = -2
+z_as_relative = false
+material = SubResource("ShaderMaterial_qp8cv")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2

@@ -4,7 +4,6 @@ extends Node2D
 @onready var cards_texture: Texture2D = preload("res://entities/cards/art/Pixel_Playing_Card_Set_updated.svg")
 @onready var card_shader: Shader = preload("res://entities/cards/art/card.gdshader")
 
-var _cards: Array[CardData] = []
 var _card_cache := { }
 
 @export var hand_curve: Curve
@@ -71,25 +70,21 @@ func setup(player_manager: PlayerManager) -> void:
 
 
 func receive_cards(cards: Array[CardData], deck_manager: DeckManager) -> void:
-	_cards = cards
+	_parent.hand = cards
 	render_hand(deck_manager)
 
 
-func add_card(from: int, card: CardData, deck_manager: DeckManager) -> Array[CardData]:
-	_cards.append(card)
-
-	return _cards
+func add_card(from: int, card: CardData, deck_manager: DeckManager) -> void:
+	_parent.hand.append(card)
 
 
-func remove_card(from: int, card: CardData, deck_manager: DeckManager) -> Array[CardData]:
-	_cards = _cards.filter(func(c): return c.to_key() != card.to_key())
-
-	return _cards
+func remove_card(from: int, card: CardData, deck_manager: DeckManager) -> void:
+	_parent.hand = _parent.hand.filter(func(c): return c.to_key() != card.to_key())
 
 
 func update_hand(cards: Array[CardData], deck_manager: DeckManager) -> void:
-	_cards = cards
-	_cards.sort_custom(func(a, b): return a.number < b.number)
+	_parent.hand = cards
+	_parent.hand.sort_custom(func(a, b): return a.number < b.number)
 	render_hand(deck_manager)
 
 
@@ -98,7 +93,7 @@ func render_hand(deck_manager: DeckManager) -> void:
 		child.queue_free()
 
 	var card_size: Vector2i = deck_manager.get_card_size()
-	var count: int = _cards.size()
+	var count: int = _parent.hand.size()
 
 	hand_width = (count * card_size.x * GameConstants.SCALE_MULTIPLIER) + ((count - 1.) * x_sep)
 
@@ -112,7 +107,7 @@ func render_hand(deck_manager: DeckManager) -> void:
 	var new_side_offset: float = ((viewport_size.x - hand_width + (card_size.x * GameConstants.SCALE_MULTIPLIER)) / 2.)
 
 	for i in count:
-		var card: CardData = _cards[i]
+		var card: CardData = _parent.hand[i]
 		var rect_origin: Vector2i = deck_manager.get_rect_for(card)
 		var region: Rect2 = Rect2(rect_origin, card_size)
 

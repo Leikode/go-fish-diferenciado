@@ -4,6 +4,7 @@ extends Control
 @export var from_label: Label
 @export var to_label: Label
 @export var player_turn: Label
+@export var end_game_label: Label
 
 @onready var cards_texture: Texture2D = preload("res://entities/cards/art/Pixel_Playing_Card_Set_updated.svg")
 @onready var card_shader: Shader = preload("res://entities/cards/art/card.gdshader")
@@ -18,6 +19,7 @@ func setup(board_manager: BoardManager) -> void:
 	from_label.text = ""
 	to_label.text = ""
 	player_turn.text = ""
+	end_game_label.text = ""
 	parent = board_manager
 	deck_manager = parent.deck_manager
 	viewport_size = get_viewport().get_visible_rect().size
@@ -59,6 +61,18 @@ func show_player_turn(player_in_turn: int) -> void:
 	from_label.text = ""
 
 
+func show_end_game(winners: Array) -> void:
+	for child in get_children():
+		if child.name != end_game_label.name:
+			child.queue_free()
+
+	var end_game_message: String = "Vencedor(es):\n"
+	for winner in winners:
+		end_game_message += "%s\n" % winner
+
+	end_game_label.text = end_game_message
+
+
 func _animate_buy_card(card: CardData, name_from: String, name_to: String, player_in_turn: int) -> void:
 	var sprite_size: Vector2i = deck_manager.get_card_size()
 	var rect_origin: Vector2i = deck_manager.get_rect_for(card)
@@ -85,10 +99,12 @@ func _animate_buy_card(card: CardData, name_from: String, name_to: String, playe
 
 	await get_tree().create_timer(1.5).timeout
 
-	from_label.text = ""
-	to_label.text = ""
-
-	sprite.queue_free()
+	if !from_label.is_queued_for_deletion():
+		from_label.text = ""
+	if !to_label.is_queued_for_deletion():
+		to_label.text = ""
+	if !sprite.is_queued_for_deletion():
+		sprite.queue_free()
 
 	if player_in_turn == GameState.local_player_id:
 		parent.activate_selection.emit()

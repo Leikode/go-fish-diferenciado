@@ -9,6 +9,8 @@ var points: int = 0
 @onready var inspect_hand_component: InspectHandComponent = %InspectHandComponent
 @onready var player_hand: PlayerHand = %PlayerHand
 
+var hand: Array[CardData] = []
+
 
 func _ready() -> void:
 	render_hand_component.setup(self)
@@ -17,11 +19,11 @@ func _ready() -> void:
 
 
 func receive_cards(cards: Array[CardData], deck_manager: DeckManager) -> void:
-	cards = _check_for_points(cards)
-	render_hand_component.receive_cards(cards, deck_manager)
+	var result: Array[CardData] = _check_for_points(cards)
+	render_hand_component.receive_cards(result, deck_manager)
 	player_hand.reset_signals()
 	NetworkManager.send(
-		NetworkMessageBuilder.report_number_of_cards(GameState.local_player_id, cards.size(), points),
+		NetworkMessageBuilder.report_number_of_cards(GameState.local_player_id, hand.size(), points),
 	)
 
 
@@ -46,8 +48,8 @@ func player_has_card(card: CardData) -> bool:
 
 
 func add_card(from: int, card: CardData, deck_manager: DeckManager) -> void:
-	var cards: Array[CardData] = render_hand_component.add_card(from, card, deck_manager)
-	var result: Array[CardData] = _check_for_points(cards)
+	render_hand_component.add_card(from, card, deck_manager)
+	var result: Array[CardData] = _check_for_points(hand)
 	render_hand_component.update_hand(result, deck_manager)
 	NetworkManager.send(
 		NetworkMessageBuilder.report_number_of_cards(GameState.local_player_id, result.size(), points),
@@ -55,10 +57,10 @@ func add_card(from: int, card: CardData, deck_manager: DeckManager) -> void:
 
 
 func remove_card(from: int, card: CardData, deck_manager: DeckManager) -> void:
-	var cards: Array[CardData] = render_hand_component.remove_card(from, card, deck_manager)
-	render_hand_component.update_hand(cards, deck_manager)
+	render_hand_component.remove_card(from, card, deck_manager)
+	render_hand_component.update_hand(hand, deck_manager)
 	NetworkManager.send(
-		NetworkMessageBuilder.report_number_of_cards(GameState.local_player_id, cards.size(), points),
+		NetworkMessageBuilder.report_number_of_cards(GameState.local_player_id, hand.size(), points),
 	)
 
 

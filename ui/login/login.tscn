@@ -3,10 +3,19 @@
 [ext_resource type="Script" uid="uid://c0fcs062rfpv3" path="res://ui/login/login.gd" id="1_ntsjo"]
 [ext_resource type="Theme" uid="uid://djep1pu4ak2s7" path="res://common/fonts/game_font.tres" id="1_yg3i8"]
 [ext_resource type="FontFile" uid="uid://dcf7mnch1fl7w" path="res://common/fonts/PoLigon-Yqxvv.otf" id="3_j4qit"]
+[ext_resource type="Shader" uid="uid://cofttgxyow0ua" path="res://ui/board/board_bg.gdshader" id="4_54mff"]
 
 [sub_resource type="Theme" id="Theme_54mff"]
 default_font = ExtResource("3_j4qit")
 default_font_size = 21
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_c4gh1"]
+shader = ExtResource("4_54mff")
+shader_parameter/first_color = Color(0.13042137, 0.13296095, 0.20294157, 1)
+shader_parameter/second_color = Color(0.25024596, 0.1980657, 0.23234391, 1)
+shader_parameter/square_size = 84.7690039790275
+shader_parameter/speed = 0.50000002375
+shader_parameter/direction = Vector2(0, 1)
 
 [node name="Login" type="Control" unique_id=493552888]
 layout_mode = 3
@@ -43,3 +52,17 @@ offset_bottom = 507.0
 theme = ExtResource("1_yg3i8")
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=462337687]
+process_mode = 4
+layer = -1
+
+[node name="BoardBG" type="ColorRect" parent="CanvasLayer" unique_id=1352774952]
+z_index = -2
+z_as_relative = false
+material = SubResource("ShaderMaterial_c4gh1")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2

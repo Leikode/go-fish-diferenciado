@@ -126,6 +126,10 @@ func _on_message_received(msg: Dictionary) -> void:
 				msg.get("card"),
 				msg.get("accepted"),
 			)
+		"end_game":
+			_handle_end_game(
+				msg.get("winners", []),
+			)
 
 
 func _handle_start_hand(hand_keys: Array) -> void:
@@ -148,6 +152,24 @@ func _display_opponent_number_of_cards(opponent_id: int, number_of_cards: int, p
 	opponent.display_number_of_cards(
 		player_id_to_direction[(GameState.local_player_id - opponent_id + 4) % 4],
 	)
+
+	if GameState.is_host():
+		var total_number_of_cards: int = _local_player.hand.size()
+		var max_points: int = _local_player.points
+		var winners: Array[String] = [_local_player.player_name]
+		for opponent_node in _opponents.values():
+			if opponent_node.points > max_points:
+				winners.clear()
+				max_points = opponent_node.points
+				winners.append(opponent_node.opponent_name)
+			elif opponent_node.points == max_points:
+				winners.append(opponent_node.opponent_name)
+			total_number_of_cards += opponent_node.number_of_cards
+
+		if total_number_of_cards == 0:
+			NetworkManager.send(
+				NetworkMessageBuilder.end_game(winners),
+			)
 
 
 func _set_board_shader_direction(current_player_id: int):
@@ -244,6 +266,14 @@ func _handle_buy_card_response(
 			render_game_state_manager.show_negated_card(parsed_card, from_name, to_name)
 		else:
 			render_game_state_manager.show_buyed_card(parsed_card, from_name, to_name, player_in_turn)
+
+
+func _handle_end_game(winners: Array) -> void:
+	render_game_state_manager.show_end_game(winners)
+
+	await get_tree().create_timer(5.5).timeout
+
+	get_tree().change_scene_to_file("res://ui/login/login.tscn")
 
 
 func _on_player_left(player_id: int, _name: String) -> void:
